@@ -1,0 +1,88 @@
+<html>
+
+<head>
+
+<script>
+
+function subst() {
+  var vars={};
+  var x=document.location.search.substring(1).split('&');
+  for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+  var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+
+  for(var i in x) {
+    var y = document.getElementsByClassName(x[i]);
+    for(var j=0; j<y.length; ++j){
+         y[j].textContent = vars[x[i]];
+    }
+    /* if this is the first page, just remove the footer element from the Document 
+    if(vars['page'] != vars['topage']){  
+      var elt = document.getElementById("pdfFooter");
+      elt.parentNode.removeChild(elt);
+    }
+	*/	
+  }
+}
+
+</script>
+
+</head>
+
+<body style="border:0; margin: 0;" onload="subst()" bgcolor="white">
+
+
+<table width="100%">
+
+<tr >
+
+<td width="80%">
+    <center>
+    
+    
+        
+    
+
+  <font  face="Courier New" size="1">   
+    <b> ESTE DOCUMENTO ES UNA REPRESENTACION IMPRESA DE UN CFDi </b>
+    <br>
+    EL REGISTRO DE ESTE DOCUMENTO PUEDE SER VERIFICADO EN LA PAGINA DE INTERNET DEL SAT 
+    <br>
+    <b> https://verificacfdi.facturaelectronica.sat.gob.mx/ </b>
+    <br>
+    "Abarrotes Imperial"
+    <br>
+    <br>
+    <b>Página <span class="page"></span> de <span class="topage"></span></b>
+        <br></br>
+        <center>
+           
+        </center>
+    </font>
+
+    </center>
+    
+
+</td>
+
+
+
+<td width="20%">
+<img width="100" height="100" src="c:\myfacturae\cbb.jpg"/>
+</td>
+</tr>
+
+    
+    
+    
+
+</table>
+
+
+
+
+
+
+
+
+
+</body></html>

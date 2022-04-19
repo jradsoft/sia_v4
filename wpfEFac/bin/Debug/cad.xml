@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Complemento xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Origen />
+  <RecogerEn />
+  <Destino />
+  <Destinatario />
+  <RfcDestinatario />
+  <DomicilioDestinatario />
+  <EntregarEn />
+  <UUID>00000000-0000-0000-0000-000000000000</UUID>
+  <FechaTimbrado>1900-01-01T00:00:00</FechaTimbrado>
+  <NoCertificadoSAT>000000000000000</NoCertificadoSAT>
+  <SelloCFD>muestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalor</SelloCFD>
+  <SelloSAT>muestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalor</SelloSAT>
+  <CadenaTFD>muestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalor
+muestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalormuestrafiscalsinvalor</CadenaTFD>
+  <TipoComprobante>FACTURA</TipoComprobante>
+  <Cadena>||3.3|11279|2020-01-31T14:07:11|00001000000404381832|CONTADO|3158.350000|0.000000|MXN|3259.910000|I|94500|LPA9811022I4|LULU PASTELERIAS, S.A. DE C.V.|601|XAXX010101000|VENTA PUBLICO EN GENERAL|G01|01010101|1|1.00|ACT|Actividad|Venta-22078 - Tasa IEPS-0 Tasa IVA-0|329.00|329.00|329|002|Tasa|0|0|01010101|1|1.00|ACT|Actividad|Venta-22078 - Tasa IEPS-0 Tasa IVA-16|58.62|58.62|58.6206|002|Tasa|0.16|9.379296|01010101|1|1.00|ACT|Actividad|Venta-22079 - Tasa IEPS-0 Tasa IVA-0|345.00|345.00|345|002|Tasa|0|0|01010101|1|1.00|ACT|Actividad|Venta-22079 - Tasa IEPS-0 Tasa IVA-16|143.10|143.10|143.1035|002|Tasa|0.16|22.896560|01010101|1|1.00|ACT|Actividad|Venta-22079 - Tasa IEPS-8 Tasa IVA-0|74.07|74.07|74.0741|002|Tasa|0|0.0000|01010101|1|1.00|ACT|Actividad|Venta-22080 - Tasa IEPS-0 Tasa IVA-0|296.00|296.00|296|002|Tasa|0|0|01010101|1|1.00|ACT|Actividad|Venta-22080 - Tasa IEPS-0 Tasa IVA-16|68.97|68.97|68.9655|002|Tasa|0.16|11.034480|01010101|1|1.00|ACT|Actividad|Venta-22080 - Tasa IEPS-8 Tasa IVA-0|22.22|22.22|22.2222|002|Tasa|0|0.0000|01010101|1|1.00|ACT|Actividad|Venta-22081 - Tasa IEPS-0 Tasa IVA-0|591.00|591.00|591|002|Tasa|0|0|01010101|1|1.00|ACT|Actividad|Venta-22081 - Tasa IEPS-0 Tasa IVA-16|103.45|103.45|103.4484|002|Tasa|0.16|16.551744|01010101|1|1.00|ACT|Actividad|Venta-22081 - Tasa IEPS-8 Tasa IVA-0|37.04|37.04|37.037|002|Tasa|0|0.000|01010101|1|1.00|ACT|Actividad|Venta-22082 - Tasa IEPS-0 Tasa IVA-0|759.00|759.00|759|002|Tasa|0|0|01010101|1|1.00|ACT|Actividad|Venta-22082 - Tasa IEPS-0 Tasa IVA-16|162.93|162.93|162.9309|002|Tasa|0.16|26.068944|01010101|1|1.00|ACT|Actividad|Venta-22082 - Tasa IEPS-8 Tasa IVA-0|62.96|62.96|62.963|002|Tasa|0|0.000|01010101|1|1.00|ACT|Actividad|Venta-22083 - Tasa IEPS-0 Tasa IVA-0|105.00|105.00|105|002|Tasa|0|0|0|002|Tasa|0.160000|85.93|85.930000||</Cadena>
+  <CantidadLetra>(TRES MIL DOSCIENTOS CINCUENTA Y NUEVE PESOS 91/100 M.N.)</CantidadLetra>
+  <Encabezado />
+  <Observaciones />
+  <ImpuestosAdicionales />
+</Complemento>
