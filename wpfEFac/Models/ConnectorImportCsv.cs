@@ -54,7 +54,7 @@ namespace wpfEFac.Models
             strFormaPago = words[4];
             strMetodoPago = words[5];   
             retIva = 0;
-            retIsr = 0;
+            retIsr = decimal.Parse(words[7]);
             retIeps = decimal.Parse(words[6]);
         }
         
@@ -227,6 +227,11 @@ namespace wpfEFac.Models
             var dcmIeps = decimal.Parse(words[6]) * dcmIporIeps;
             
 
+            /*isr*/
+            var dcmporIsr = decimal.Parse(words[11]);
+            var dcmIrs = decimal.Parse(words[6]) * dcmporIsr;
+            
+
             BusClientes myCliente = new BusClientes();
             eFacDBEntities myEntidad = new eFacDBEntities();
 
@@ -265,7 +270,7 @@ namespace wpfEFac.Models
                      Decimal.Parse("0.0"),
 
                      "N",
-                     Decimal.Parse("0.0"),
+                     dcmporIsr,//Decimal.Parse("0.0"),
 
 
                     "N",
@@ -304,7 +309,7 @@ namespace wpfEFac.Models
                      Decimal.Parse("0.0"),
 
                      "N",
-                     Decimal.Parse("0.0"),
+                     dcmporIsr,//Decimal.Parse("0.0"),
 
 
                     "N",
@@ -353,7 +358,7 @@ namespace wpfEFac.Models
                 conceptoPrefactura.dcmPrecioUnitario = (decimal.Parse(words[6]));
                 conceptoPrefactura.dcmIVA = decimal.Parse(dcmActos_IVAProducto);
                 conceptoPrefactura.dcmRetIVA = decimal.Parse("0.0");
-                conceptoPrefactura.dcmRetISR = decimal.Parse("0.0");
+                conceptoPrefactura.dcmRetISR = decimal.Parse(words[11]);
                 conceptoPrefactura.dcmRetIEPS = decimal.Parse(words[10]);
 
                 conceptoPrefactura.strPartida = string.Empty;

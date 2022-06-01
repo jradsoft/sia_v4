@@ -1250,8 +1250,8 @@ namespace wpfEFac.Views
               List<IpesVariable> iepsJson = new List<IpesVariable>();
               List<dlleFac.ComprobanteImpuestosTraslado> Mytraslado = new List<dlleFac.ComprobanteImpuestosTraslado>();
             decimal sumaRetIeps = 0;
-            //decimal sumaRetIva = 0;
-            //decimal sumaRetIsr = 0;
+            sumaRetIva = 0;
+            sumaRetIsr = 0;
             decimal sumaSubtotal = 0;
             decimal sumaIva = 0;
             decimal sumaBaseIeps = 0;
@@ -1581,7 +1581,7 @@ namespace wpfEFac.Views
 
                         decimal impuestoRetIva = myConceptoTranslado.Base * item.retIVA.Value;
 
-                        myConceptoRetencionIva.Importe = decimal.Parse(impuestoRetIva.ToString("#0.0000"));
+                        myConceptoRetencionIva.Importe = decimal.Parse(impuestoRetIva.ToString("#0.00"));
 
                         sumaRetIva += myConceptoRetencionIva.Importe;
                     
@@ -1599,7 +1599,7 @@ namespace wpfEFac.Views
 
                         decimal impuestoRetIsr = myConceptoTranslado.Base * item.retISR.Value;
 
-                        myConceptoRetencionIrs.Importe = decimal.Parse(impuestoRetIsr.ToString("#0.0000"));
+                        myConceptoRetencionIrs.Importe = decimal.Parse(impuestoRetIsr.ToString("#0.00"));
 
                         sumaRetIsr += myConceptoRetencionIrs.Importe;
                     
