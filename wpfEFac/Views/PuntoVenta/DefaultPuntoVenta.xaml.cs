@@ -268,6 +268,7 @@ namespace wpfEFac.Views
                         break;
                     case "C": 
                         {
+                            mniImprimir.IsEnabled = 
                             mniXML.IsEnabled =
                             mniPDF.IsEnabled = true;
                         } 
@@ -1305,7 +1306,7 @@ namespace wpfEFac.Views
             
            // MyCFD20.MotivoDescuento = f.MotivoDesc;
            // MyCFD20.TipoCambio = decimal.Parse(f.TipoCambio.Value);
-            MyCFD20.Moneda = dlleFac.c_Moneda.MXN;
+            MyCFD20.Moneda = "MXN";
             
             
             
@@ -1501,7 +1502,7 @@ namespace wpfEFac.Views
 
                     decimal BaseTraslado = dcmImporte; //item.dcmPrecioUnitario * item.dcmCantidad;
 
-                    myConceptoTranslado.Base = decimal.Parse(BaseTraslado.ToString("#0.0000"));
+                    myConceptoTranslado.Base = dcmImporte;// decimal.Parse(BaseTraslado.ToString("#0.0000"));
 
                     decimal impuesto = myConceptoTranslado.Base * item.dcmIVA.Value;
 
@@ -1723,7 +1724,6 @@ namespace wpfEFac.Views
                     }
 
 
-                 
 
 
 
@@ -1734,6 +1734,24 @@ namespace wpfEFac.Views
 
 
 
+                    if (f.Clientes.strRFC == "XAXX010101000")
+                    {
+
+                        /* PARA GLOBAL*/
+                        dlleFac.ComprobanteInformacionGlobal myGlobal = new dlleFac.ComprobanteInformacionGlobal();
+
+                        string[] arrayInfoGlobal = f.Destino.Split('/');
+                        string strPeriocidad = arrayInfoGlobal[0].Split('-')[0];
+                        string strMes = arrayInfoGlobal[1];
+                        string strAno = arrayInfoGlobal[2];
+                        myGlobal.Periodicidad = strPeriocidad;
+                        myGlobal.Meses = strMes;
+                        myGlobal.Año = short.Parse(strAno);
+
+                        MyCFD20.InformacionGlobal = myGlobal;
+
+
+                    }
 
 
                    
@@ -1761,7 +1779,7 @@ namespace wpfEFac.Views
                         NoIdentificacion = "1",//item.Productos.strCodigo,
                         Descripcion = item.strConcepto,
                         ValorUnitario = decimal.Parse(item.dcmPrecioUnitario.ToString("#0.000000")),
-                        Importe = decimal.Parse(item.dcmImporte.ToString("#0.000000")),
+                        Importe = dcmImporte, //decimal.Parse(item.dcmImporte.ToString("#0.000000")),
                         Impuestos = comImpuestos
 
                     });
@@ -2316,7 +2334,7 @@ namespace wpfEFac.Views
             MyCFD20.Serie = f.strSerie;
             MyCFD20.Folio = f.strFolio;
 
-            MyCFD20.Moneda = dlleFac.c_Moneda.XXX;
+            MyCFD20.Moneda = "XXX";
 
 
 
@@ -2329,7 +2347,7 @@ namespace wpfEFac.Views
 
             MyCFD20.Emisor = new dlleFac.ComprobanteEmisor
             {
-                RegimenFiscal = f.Empresa.strWebSite.Substring(0, 3),
+                RegimenFiscal = f.Empresa.strWebSite.Split('-')[0],
                 Rfc = f.Empresa.strRFC,
                 Nombre = f.Empresa.strRazonSocial
 
@@ -2341,7 +2359,9 @@ namespace wpfEFac.Views
             {
                 Rfc = f.Clientes.strRFC,
                 Nombre = f.Clientes.strRazonSocial,
-                UsoCFDI = f.MotivoDesc
+                UsoCFDI = f.MotivoDesc,
+                RegimenFiscalReceptor = f.Clientes.strTelefono,
+                DomicilioFiscalReceptor = direccionReceptor.strCodigoPostal
 
 
 
@@ -2360,9 +2380,9 @@ namespace wpfEFac.Views
                 ClaveProdServ = "84111506", //producPago.strCodigoBarras,
                 ClaveUnidad = "ACT",
                 Descripcion = "Pago",//producPago.strNombre,
-                ValorUnitario = decimal.Parse("0.000000"),
-                Importe = decimal.Parse("0.000000"),
-
+                ValorUnitario = decimal.Parse("0"),
+                Importe = decimal.Parse("0"),
+                ObjetoImp = dlleFac.c_ObjetoImp.Item01
 
 
             });
@@ -2371,66 +2391,165 @@ namespace wpfEFac.Views
 
 
             dllPag.Pagos Pago = new dllPag.Pagos();
+            dllPag.PagosTotales totalesPago = new dllPag.PagosTotales();
 
             List<dllPag.PagosPago> myPagos = new List<dllPag.PagosPago>();
 
-
+            List<dllPag.PagosPagoDoctoRelacionado> myPagoRel = null;
             string myFormaPago = "";
-            foreach (var item in f.Detalle_Factura)
+
+            if (f.strObervaciones == "FACTORAJE")
             {
-                List<dllPag.PagosPagoDoctoRelacionado> myPagoRel = new List<dllPag.PagosPagoDoctoRelacionado>();
 
 
-                string[] words = item.strPatida.Split('|');
-                string myUUID = words[0];
-                string myFol = words[1];
-                string mySer = words[2];
-                myFormaPago = words[3];
+                /***metodo 1***/
 
-                myPagoRel.Add(new dllPag.PagosPagoDoctoRelacionado
+
+                foreach (var item in f.Detalle_Factura)
                 {
+                    myPagoRel = new List<dllPag.PagosPagoDoctoRelacionado>();
+
+
+                    string[] words = item.strPatida.Split('|');
+                    string myUUID = words[0];
+                    string myFol = words[1];
+                    string mySer = words[2];
+                    myFormaPago = words[3];
+
+                    myPagoRel.Add(new dllPag.PagosPagoDoctoRelacionado
+                    {
 
 
 
-                    IdDocumento = myUUID,
-                    Serie = mySer,
-                    Folio = myFol,
-                    MonedaDR = "MXN",
-                    MetodoDePagoDR = "PPD",
-                    NumParcialidad = f.CondPago,
-                    ImpSaldoAnt = decimal.Parse(item.dcmPrecioUnitario.ToString("#0.00")),
-                    ImpSaldoAntSpecified = true,
-                    ImpPagado = decimal.Parse(item.dcmImporte.ToString("#0.00")),
-                    ImpPagadoSpecified = true,
-                    ImpSaldoInsoluto = decimal.Parse(item.dcmDescuento.ToString("#0.00")),
-                    ImpSaldoInsolutoSpecified = true,
+                        IdDocumento = myUUID,
+                        Serie = mySer,
+                        Folio = myFol,
+                        MonedaDR = "MXN",
+                        //MetodoDePagoDR = "PPD",
+                        NumParcialidad = f.CondPago,
+                        ImpSaldoAnt = decimal.Parse(item.dcmPrecioUnitario.ToString("#0.00")),
+                        // ImpSaldoAntSpecified = true,
+                        ImpPagado = decimal.Parse(item.dcmImporte.ToString("#0.00")),
+                        //ImpPagadoSpecified = true,
+                        ImpSaldoInsoluto = decimal.Parse(item.dcmDescuento.ToString("#0.00")),
+                        //ImpSaldoInsolutoSpecified = true,
 
 
 
-                });
+                    });
 
 
-                myPagos.Add(new dllPag.PagosPago
-                {
+                    myPagos.Add(new dllPag.PagosPago
+                    {
 
-                    CtaBeneficiario = f.Empresa.strCedula,
-                    CtaOrdenante = f.Clientes.strWebSite,
-                    RfcEmisorCtaBen = f.Destino,
-                    RfcEmisorCtaOrd = f.Origen,
-                    NumOperacion = f.RecogerEn,
-                    Monto = decimal.Parse(f.dcmTotal.ToString("#0.00")),
-                    MonedaP = "MXN",
-                    FormaDePagoP = myFormaPago.Substring(0, 2),
-                    FechaPago = f.dtmFecha,
-                    DoctoRelacionado = myPagoRel.ToArray()
+                        CtaBeneficiario = f.Empresa.strCedula,
+                        
+                        CtaOrdenante = f.Clientes.strWebSite,
+                        RfcEmisorCtaBen = f.Destino,
+                        RfcEmisorCtaOrd = f.Origen,
+                        NumOperacion = f.RecogerEn,
+                        Monto = decimal.Parse(item.dcmImporte.ToString("#0.00")),
+                        MonedaP = "MXN",
+                        FormaDePagoP = myFormaPago.Substring(0, 2),
+
+                        FechaPago = f.dtmFecha,
+                        DoctoRelacionado = myPagoRel.ToArray()
 
 
-                });
+                    });
 
+
+                }
+
+                totalesPago.MontoTotalPagos = decimal.Parse(f.dcmTotal.ToString("#0.00"));
 
             }
 
 
+            /*** Metodo 2 ***/
+            // List<dllPag.PagosPagoDoctoRelacionado> myPagoRel = new List<dllPag.PagosPagoDoctoRelacionado>();
+            else
+            {
+
+                myPagoRel = new List<dllPag.PagosPagoDoctoRelacionado>();
+                string strMoneda = "";
+                string tipoCambio = "";
+                //Boolean valueTC = false;
+                foreach (var item in f.Detalle_Factura)
+                {
+
+
+
+                    string[] words = item.strPatida.Split('|');
+                    string myUUID = words[0];
+                    string myFol = words[1];
+                    string mySer = words[2];
+                    myFormaPago = words[3];
+                    strMoneda = words[5].Split('-')[0];
+                    tipoCambio = words[6];
+
+                    //if (strMoneda == "USD") {
+                    //     valueTC = true;             
+                    //}
+
+
+                    myPagoRel.Add(new dllPag.PagosPagoDoctoRelacionado
+                    {
+
+
+
+                        IdDocumento = myUUID,
+                        Serie = mySer,
+                        Folio = myFol,
+                        MonedaDR = strMoneda,
+                        // MetodoDePagoDR = "PPD",
+                        NumParcialidad = f.CondPago,
+                        ImpSaldoAnt = decimal.Parse(item.dcmPrecioUnitario.ToString("#0.00")),
+                        //  ImpSaldoAntSpecified = true,
+                        ImpPagado = decimal.Parse(item.dcmImporte.ToString("#0.00")),
+                        //   ImpPagadoSpecified = true,
+                        ImpSaldoInsoluto = decimal.Parse(item.dcmDescuento.ToString("#0.00")),
+                        //   ImpSaldoInsolutoSpecified = true,
+                        ObjetoImpDR = dllPag.c_ObjetoImp.Item01,
+
+                        EquivalenciaDR = 1,
+                        EquivalenciaDRSpecified = true
+
+
+                    });
+                }
+
+
+                string CtaBeneficiario = f.Empresa.strCedula;
+                string CtaOrdenante = f.Clientes.strWebSite;
+
+                if (myFormaPago.Substring(0, 2) == "01") {
+                    CtaBeneficiario = "";
+                    CtaOrdenante = "";
+                
+                }
+
+                myPagos.Add(new dllPag.PagosPago
+                {
+                    
+                    CtaBeneficiario = CtaBeneficiario,
+                    CtaOrdenante = CtaOrdenante,
+                    RfcEmisorCtaBen = f.Destino,
+                    RfcEmisorCtaOrd = f.Origen,
+                    NumOperacion = f.RecogerEn,
+                    Monto = decimal.Parse(f.dcmTotal.ToString("#0.00")),
+                    MonedaP = strMoneda,
+
+                    FormaDePagoP = myFormaPago.Substring(0, 2),
+                    FechaPago = f.dtmFecha,
+                    DoctoRelacionado = myPagoRel.ToArray(),
+                    TipoCambioP = decimal.Parse(tipoCambio),
+                    TipoCambioPSpecified = true,
+
+                });
+
+
+                totalesPago.MontoTotalPagos = decimal.Parse(f.dcmTotal.ToString("#0.00"));
 
 
 
@@ -2438,8 +2557,13 @@ namespace wpfEFac.Views
 
 
 
-            Pago.Version = "1.0";
+
+
+            }
+
+            Pago.Version = "2.0";
             Pago.Pago = myPagos.ToArray();
+            Pago.Totales = totalesPago;
 
 
             // MyCFD20.Complemento = new dlleFac.ComprobanteComplemento[1];
@@ -2447,7 +2571,7 @@ namespace wpfEFac.Views
 
             XmlDocument docPago = new XmlDocument();
             XmlSerializerNamespaces xmlNameSpcePago = new XmlSerializerNamespaces();
-            xmlNameSpcePago.Add("pago10", "http://www.sat.gob.mx/Pagos");
+            xmlNameSpcePago.Add("pago20", "http://www.sat.gob.mx/Pagos20");
             using (XmlWriter writer = docPago.CreateNavigator().AppendChild())
             {
                 new XmlSerializer(Pago.GetType()).Serialize(writer, Pago, xmlNameSpcePago);
@@ -2475,6 +2599,7 @@ namespace wpfEFac.Views
 
 
         }
+
         private static void LlenarEmisor(Factura f, Direcciones_Fiscales direccionEmisor, dlleFac.ComprobanteFiscalDigital cfd)
         {
 
@@ -2681,7 +2806,7 @@ namespace wpfEFac.Views
             if (this.dtgFacturasHistorico.SelectedItem != null)
             {
                 Factura f = (Factura)dtgFacturasHistorico.SelectedItem;
-                if (f.chrStatus == "A")
+                if ((f.chrStatus == "A") || (f.chrStatus == "C"))
                     App.Current.Properties["liga"] = f.strPDFpath;
                 else
                 {
@@ -3295,7 +3420,7 @@ namespace wpfEFac.Views
 
         private void mniPayment_Click(object sender, RoutedEventArgs e)
         {
-            PaymentFactura myPago = new PaymentFactura();
+            PaymentFactura myPago = new PaymentFactura(null);
 
 
             if (myPago.ShowDialog().Value == true)

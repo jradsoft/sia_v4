@@ -126,6 +126,7 @@
     <Compile Include="Models\ConnectorSave.cs" />
     <Compile Include="Models\ConnectorSIA.cs" />
     <Compile Include="Models\ConnectorTypes.cs" />
+    <Compile Include="Models\DataCompPago.cs" />
     <Compile Include="Models\dataConcepts.cs" />
     <Compile Include="Models\ImpLocales.cs" />
     <Compile Include="Models\Relacionados.cs" />

@@ -3094,13 +3094,15 @@ C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac_MarkupCompile.lref
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\wpfEFac.exe.config
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\wpfEFac.exe
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\wpfEFac.pdb
+C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\BouncyCastle.Crypto.dll
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\dlleFac.dll
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\GenCode128.dll
+C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\itextsharp.dll
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\ThoughtWorks.QRCode.dll
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\dlleFac.pdb
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\GenCode128.pdb
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\ThoughtWorks.QRCode.pdb
-C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\Newtonsoft.Json.xml
+C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\itextsharp.xml
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\MainWindow.baml
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\Views\EMail\Email.baml
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\Views\General\BuscarClienteWindow.baml
@@ -3113,6 +3115,3 @@ C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\RdlCompile.cache
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\RdlCompile.compiled
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.exe
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.pdb
-C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\BouncyCastle.Crypto.dll
-C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\itextsharp.dll
-C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\itextsharp.xml

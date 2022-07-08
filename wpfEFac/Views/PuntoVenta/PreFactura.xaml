@@ -137,9 +137,28 @@
                             </ComboBoxItem>
 
                         </ComboBox>
-                        <!--<TextBox x:Name="txtMetodoPago" Width="225"/>-->
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Text="Motivo Descuento:" Width="100"/>
-                        <TextBox x:Name="txtMotivoDescuento" HorizontalAlignment="Center" VerticalAlignment="Top" Text="" Height="23"  Width="200" />
+                        <TextBox x:Name="txtPeriocidad" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Periocidad:" Height="23"  Width="65" Visibility="Collapsed" />
+                        <ComboBox VerticalAlignment="Center" x:Name="cmbPeriocidad" SelectedIndex="0" Width="80" Visibility="Collapsed">
+                            <ComboBoxItem>
+                                <TextBlock>01-Diario</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>02-Semanal</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>03-Quincenal</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>04-Mensual</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>05-Bimestral</TextBlock>
+                            </ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" x:Name="txbMes" Text="Mes:" Width="30" Visibility="Collapsed"/>
+                        <TextBox x:Name="txtMes" HorizontalAlignment="Center" VerticalAlignment="Top" Text="" Height="23"  Width="40" Visibility="Collapsed" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Text="Año:" x:Name="txbAno" Width="30" Visibility="Collapsed"/>
+                        <TextBox x:Name="txtAno" HorizontalAlignment="Center" VerticalAlignment="Top" Text="" Height="23"  Width="40" Visibility="Collapsed" />
                     </StackPanel>
                     
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
@@ -234,7 +253,13 @@
                                 <TextBlock>D10-PAGOS POR SERVICIOS EDUCATIVOS (COLEGIATURAS)</TextBlock>
                             </ComboBoxItem>
                             <ComboBoxItem>
-                                <TextBlock>P01-POR DEFINIR</TextBlock>
+                                <TextBlock>S01-SIN EFECTOS FISCALES</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>CP01-PAGOS</TextBlock>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <TextBlock>CN01-NOMINA</TextBlock>
                             </ComboBoxItem>
                         </ComboBox>
                         

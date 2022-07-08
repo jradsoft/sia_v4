@@ -38,17 +38,15 @@ namespace wpfEFac.Models
            myList.Add(new Cat() { clave = "611", descripcion = "Ingresos por Dividendos (socios y accionistas)" });
            myList.Add(new Cat() { clave = "612", descripcion = "Personas Físicas con Actividades Empresariales y Profesionales" });
            myList.Add(new Cat() { clave = "614", descripcion = "Ingresos por interes" });
+           myList.Add(new Cat() { clave = "615", descripcion = "Régimen de los ingresos por obtención de premios" });
            myList.Add(new Cat() { clave = "616", descripcion = "Sin obligaciones fiscales" });
            myList.Add(new Cat() { clave = "620", descripcion = "Sociedades Cooperativas de Producción que optan por diferir sus ingresos" });
            myList.Add(new Cat() { clave = "621", descripcion = "Incorporación Fiscal" });
            myList.Add(new Cat() { clave = "622", descripcion = "Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras" });
            myList.Add(new Cat() { clave = "623", descripcion = "Opcional para Grupos de Sociedades" });
            myList.Add(new Cat() { clave = "624", descripcion = "Coordinados" });
-           myList.Add(new Cat() { clave = "628", descripcion = "Hidrocarburos" });
-           myList.Add(new Cat() { clave = "607", descripcion = "Régimen de Enajenación o Adquisición de Bienes" });
-           myList.Add(new Cat() { clave = "629", descripcion = "De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales" });
-           myList.Add(new Cat() { clave = "630", descripcion = "Enajenación de acciones en bolsa de valores" });
-           myList.Add(new Cat() { clave = "615", descripcion = "Régimen de los ingresos por obtención de premios" });
+           myList.Add(new Cat() { clave = "625", descripcion = "Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas" });
+           myList.Add(new Cat() { clave = "626", descripcion = "Régimen Simplificado de Confianza" });
 
            return myList;
        }

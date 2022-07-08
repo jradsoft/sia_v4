@@ -27,6 +27,12 @@ namespace wpfEFac.Views.Clientes
             InitializeComponent();
             entidad = new eFacDBEntities();
             data = new EditarClienteViewModel();
+
+            txtTelefono.Items.Clear();
+            txtTelefono.ItemsSource = FactCat.getListRegimen();
+            txtTelefono.DisplayMemberPath = "descripcion";
+            txtTelefono.SelectedValuePath = "clave";
+           
         }
 
         private void bttGuardar_Click(object sender, RoutedEventArgs e)
@@ -43,7 +49,7 @@ namespace wpfEFac.Views.Clientes
                 string Nombre = txtNombreComercial.Text;
                 string Giro = txtGiro.Text;
                 string Tipo = cmbTipoComprobante.Text;
-                string Telefono = txtTelefono.Text;
+                string Telefono = txtTelefono.SelectedValue.ToString();
                 string Movil = txtCelular.Text;
                 string Email = txtEmail1.Text;
                 string Contacto = txtContacto.Text;

@@ -148,8 +148,8 @@ namespace wpfEFac.Models
                     Clientes MyCliente = db.Clientes.First(c => c.intID == idCliente);
                     if (MyCliente != null)
                     {
-                        MyCliente.strTelefono = strMetodoPago;
-                        MyCliente.strContacto = formaPago;
+                       // MyCliente.strTelefono = strMetodoPago;
+                       // MyCliente.strContacto = formaPago;
                     }
                    
 

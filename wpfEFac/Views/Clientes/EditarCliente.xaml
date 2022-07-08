@@ -77,8 +77,9 @@
         <TextBlock Grid.Row="14" Grid.Column="0" Height="23" Name="txbPoblacion" Text="Población/Localidad" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         <TextBlock Grid.Row="15" Grid.Column="0" Height="23" Name="txbCP" Text="Código Postal" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         <TextBox Grid.Column="1" Grid.Row="15" Height="23" HorizontalAlignment="Left" Name="txtCP" VerticalAlignment="Center" Width="280" TabIndex="14" />
-        <TextBlock Grid.Row="16" Grid.Column="0" Height="23" Name="txbTelefono1" Text="Teléfono Casa" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed"/>
-        <TextBox Grid.Column="1" Grid.Row="16" Height="23" HorizontalAlignment="Left" Name="txtTelefono" VerticalAlignment="Center" Width="280" TabIndex="15" Visibility="Collapsed" />
+        <TextBlock Grid.Row="16" Grid.Column="0" Height="23" Name="txbTelefono1" Text="Regimen Fiscal" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Visible"/>
+        <ComboBox Grid.Column="1" Grid.Row="16" Height="22" HorizontalAlignment="Left" Name="txtTelefono" VerticalAlignment="Center" Width="230" Background="White" Margin="0,2">
+        </ComboBox>
         <TextBlock Grid.Row="17" Grid.Column="0" Height="23" Name="txbTelefono2" Text="Teléfono Oficina" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         <TextBox Grid.Column="1" Grid.Row="17" Height="23" HorizontalAlignment="Left" Name="txtCelular" VerticalAlignment="Center" Width="280" TabIndex="16" />
         <TextBox Grid.Column="1" Grid.Row="18" Height="23" HorizontalAlignment="Left" Name="txtEmail1" VerticalAlignment="Center" Width="280" TabIndex="17" />

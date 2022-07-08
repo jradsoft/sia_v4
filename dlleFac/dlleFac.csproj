@@ -57,12 +57,12 @@
     <Compile Include="DomicilioFiscal.cs" />
     <Compile Include="Emisor.cs" />
     <Compile Include="Factura.cs" />
+    <Compile Include="FacturaloService.cs" />
     <Compile Include="implocal.cs" />
     <Compile Include="Impuestos.cs" />
     <Compile Include="InformacionAduanera.cs" />
     <Compile Include="MyFactE.cs" />
-    <Compile Include="MyServicePruebas.cs" />
-    <Compile Include="Pagos10.cs" />
+    <Compile Include="Pagos20.cs" />
     <Compile Include="Parte.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Receptor.cs" />

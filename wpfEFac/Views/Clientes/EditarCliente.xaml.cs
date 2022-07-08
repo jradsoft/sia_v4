@@ -31,6 +31,17 @@ namespace wpfEFac.Views.Clientes
             cliente = new Models.EditarClienteViewModel();
             this.Loaded += EditarCliente_Loaded;
 
+
+            try
+            {
+                txtTelefono.Items.Clear();
+                txtTelefono.ItemsSource = FactCat.getListRegimen();
+                txtTelefono.DisplayMemberPath = "descripcion";
+                txtTelefono.SelectedValuePath = "clave";
+            }
+            catch (Exception ex) { }
+     
+
             var cli = cliente.GetCliente(id);
             //var RFC = cliente.GetRFC(cli.strRFC);
             //var Razon = cliente.GetRazonSocial(cli.strRazonSocial);
@@ -60,7 +71,7 @@ namespace wpfEFac.Views.Clientes
             txtMunicipio.Text = calle.strMunicipio == null ? "<No tiene>" : calle.strMunicipio;
             txtPoblacion.Text = calle.strPoblacionLocalidad == null ? "<No tiene>" : calle.strPoblacionLocalidad;
             txtCP.Text = calle.strCodigoPostal == null ? "<No tiene>" : calle.strCodigoPostal;
-            txtTelefono.Text = cli.strTelefono;
+            txtTelefono.SelectedValue = cli.strTelefono;
             txtCelular.Text = cli.strTelefonoMovil == null ? "<No tiene>" : cli.strTelefonoMovil;
             txtEmail1.Text = cli.strEmail;
             txtContacto.Text = cli.strContacto;
@@ -113,7 +124,7 @@ namespace wpfEFac.Views.Clientes
             txtMunicipio.Text = calle.strMunicipio == null ? "<No tiene>" : calle.strMunicipio;
             txtPoblacion.Text = calle.strPoblacionLocalidad == null ? "<No tiene>" : calle.strPoblacionLocalidad;
             txtCP.Text = calle.strCodigoPostal == null ? "<No tiene>" : calle.strCodigoPostal;
-            txtTelefono.Text = cli.strTelefono;
+            txtTelefono.SelectedValue = cli.strTelefono;
             txtCelular.Text = cli.strTelefonoMovil == null ? "<No tiene>" : cli.strTelefonoMovil;
             txtEmail1.Text = cli.strEmail;
             txtContacto.Text = cli.strContacto;
@@ -157,7 +168,7 @@ namespace wpfEFac.Views.Clientes
             string Municipio = txtMunicipio.Text;
             string Poblacion = txtPoblacion.Text;
             string Codigo = txtCP.Text;
-            string Casa = txtTelefono.Text;
+            string Casa = txtTelefono.SelectedValue.ToString();
             string Oficina = txtCelular.Text;
             string Email = txtEmail1.Text;
             string Contacto = txtContacto.Text;

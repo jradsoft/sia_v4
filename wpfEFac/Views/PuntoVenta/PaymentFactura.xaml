@@ -22,9 +22,9 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
             <RowDefinition Height="35" />
-            <RowDefinition Height="25" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
@@ -37,8 +37,8 @@
         <TextBlock Grid.Row="1" Grid.Column="1" Height="23" HorizontalAlignment="Left" Name="txbFolio" Text="   Factura" VerticalAlignment="Center" Margin="18,1,0,1" Width="68" />
         <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Name="cmbFacturas" VerticalAlignment="Center" Width="142"  Background="White" Margin="0,3,14,1" SelectionChanged="cmbFacturas_SelectionChanged">
         </ComboBox>
-        
-        <Button  Grid.Row="6" Grid.Column="3"  Name="btnAdd" VerticalAlignment="Center" Click="btnAdd_Click" Margin="64,10,50,6" Height="19">
+
+        <Button  Grid.Row="4" Grid.Column="3"  Name="btnAdd" VerticalAlignment="Center" Click="btnAdd_Click" Margin="64,10,50,6" Height="19">
             <DockPanel>
                 <Image Source="/wpfEFac;component/Images/Icons/addCFD.ico"/>
                 <TextBlock  Text="Agregar Factura"  />
@@ -54,49 +54,53 @@
         <TextBlock  Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" Text="      Todas Facturas:" />
         <CheckBox  Grid.Row="1" Grid.Column="3" x:Name="chbTodas" Unchecked="chbTodas_Unchecked" Checked="chbTodas_Checked" HorizontalAlignment="Left" />
 
-
-        <TextBlock Grid.Row="4" Grid.Column="0" Height="21" HorizontalAlignment="Left" Name="txbMontoFactura" Text="   Monto Factura" VerticalAlignment="Center" FontWeight="Normal" Margin="0,3,0,1" />
-        <TextBox Grid.Row="4" Grid.Column="0" Height="23" HorizontalAlignment="Right" Text="0.00"    Name="txtMontoFactura" Width="158" Margin="0,6,14,6" FontWeight="Bold" FontFamily="Arial" FontSize="14" TextAlignment="Center" Foreground="#FFFC0D0D" />
-
-
-        <TextBlock Grid.Row="8" Grid.Column="2" Height="21" HorizontalAlignment="Left" Name="txbMonto" Text="   Gran Total:" VerticalAlignment="Center" FontWeight="Normal" Margin="0,3,0,1" />
-        <TextBlock Grid.Row="8" Grid.Column="2" Height="23" HorizontalAlignment="Right" Text="0.00"    Name="txtMonto" Width="158" Margin="0,6,14,6" FontWeight="Bold" FontFamily="Arial" FontSize="14" TextAlignment="Center" Foreground="#FFFC0D0D" />
-
-
-        <TextBlock Grid.Row="4" Grid.Column="1" Height="23" HorizontalAlignment="Left" Name="txbSanterior" Text="   Saldo Anterior" VerticalAlignment="Center" />
-        <TextBox Grid.Row="4" Grid.Column="1" Height="23" HorizontalAlignment="Right" Text="0.00"  Name="txtSanterior" Width="142" PreviewTextInput="txtSanterior_PreviewTextInput" LostFocus="txtSanterior_LostFocus" TextChanged="txtSanterior_TextChanged" Margin="0,6,14,6" TextAlignment="Center" />
-
-        <TextBlock Grid.Row="4" Grid.Column="2" Height="23" HorizontalAlignment="Left" Name="txbPagado" Text="   Pagado" VerticalAlignment="Center" />
-        <TextBox Grid.Row="4" Grid.Column="2" Height="23" HorizontalAlignment="Right" Text="0.00" PreviewTextInput="txtPagado_PreviewTextInput" LostFocus="txtPagado_LostFocus"  Name="txtPagado" Width="142" TextChanged="txtPagado_TextChanged" Margin="0,6,14,6" TextAlignment="Center" />
-
-        <TextBlock Grid.Row="4" Grid.Column="3" Height="23" HorizontalAlignment="Left" Name="txbInsoluto" Text="   Saldo Insoluto" VerticalAlignment="Center" />
-        <TextBox Grid.Row="4" Grid.Column="3" Height="23" HorizontalAlignment="Right" Text="0.00" PreviewTextInput="txtInsouto_PreviewTextInput" LostFocus="txtInsouto_LostFocus" Name="txtInsouto" Width="142" TextChanged="txtInsouto_TextChanged" Margin="0,6,14,6" TextAlignment="Center" />
+        <TextBlock  Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" Text="Factoraje:         " HorizontalAlignment="Left" Margin="132,0,0,0" Width="62" />
+        <CheckBox  Grid.Row="1" Grid.Column="3" x:Name="chbFactoraje"   HorizontalAlignment="Right" Margin="0,0,40,0" />
 
 
 
-        <TextBlock Grid.Row="6" Grid.Column="0" Height="23" HorizontalAlignment="Left" Name="txbNuOperacion" Text="   # Operacion" VerticalAlignment="Center" />
-        <TextBox Grid.Row="6" Grid.Column="0" Height="23" HorizontalAlignment="Right" TextAlignment="Center" Name="txtNuOperacion" Text="01" Width="142" TextChanged="txtNuOperacion_TextChanged" Margin="0,6,14,6" />
-
-        <TextBlock Grid.Row="6" Grid.Column="1" Height="23" HorizontalAlignment="Left" Name="txbParcialidad" Text="   Parcialidad" VerticalAlignment="Center" />
-        <TextBox Grid.Row="6" Grid.Column="1" Height="23" HorizontalAlignment="Right" Name="txtParcialidad" Width="142" TextChanged="txtParcialidad_TextChanged" Margin="0,6,14,6" />
+        <TextBlock Grid.Row="3" Grid.Column="0" Height="21" HorizontalAlignment="Left" Name="txbMontoFactura" Text="   Monto Factura" VerticalAlignment="Center" FontWeight="Normal" Margin="0,3,0,1" />
+        <TextBox Grid.Row="3" Grid.Column="0" Height="23" VerticalAlignment="Center" HorizontalAlignment="Right" Text="0.00"    Name="txtMontoFactura" Width="158" Margin="0,6,14,6" FontWeight="Bold" FontFamily="Arial" FontSize="14" TextAlignment="Center" Foreground="#FFFC0D0D" />
 
 
-
-        <TextBlock Grid.Row="6" Grid.Column="2" Visibility="Collapsed" x:Name="lblStatus" HorizontalAlignment="Left" Width="100" Text="    Status" Margin="0,6,0,0"></TextBlock>
-        <ComboBox Grid.Row="6" Grid.Column="2"  Visibility="Collapsed" HorizontalAlignment="Right"  x:Name="cmbStausPago" SelectedIndex="0" Width="168" Margin="0,6,14,6">
-                    <ComboBoxItem>
-                        <TextBlock>PAGADA</TextBlock>
-                    </ComboBoxItem>
-                    <ComboBoxItem>
-                        <TextBlock>PAGO PARCIAL</TextBlock>
-                    </ComboBoxItem>
-
-                </ComboBox>
+        <TextBlock Grid.Row="6" Grid.Column="2" Height="21" HorizontalAlignment="Left" Name="txbMonto" Text="   Gran Total:" VerticalAlignment="Center" FontWeight="Normal" Margin="0,3,0,1" />
+        <TextBox Grid.Row="6" Grid.Column="2" Height="23" HorizontalAlignment="Right" Text="0.00"    Name="txtMonto" Width="158" FontWeight="Bold" FontFamily="Arial" FontSize="14" TextAlignment="Center" Foreground="#FFFC0D0D" />
 
 
-        <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Text="    Forma Pago:" Width="86" Margin="0,10" />
+        <TextBlock Grid.Row="3" Grid.Column="1" Height="23" HorizontalAlignment="Left" Name="txbSanterior" Text="   Saldo Anterior" VerticalAlignment="Center" />
+        <TextBox Grid.Row="3" Grid.Column="1" Height="23" HorizontalAlignment="Right" VerticalAlignment="Center" Text="0.00"  Name="txtSanterior" Width="142" PreviewTextInput="txtSanterior_PreviewTextInput" LostFocus="txtSanterior_LostFocus" TextChanged="txtSanterior_TextChanged" Margin="0,6,14,6" TextAlignment="Center" />
 
-        <ComboBox Grid.Row="6" Grid.Column="2" VerticalAlignment="Center" x:Name="cmbFormaPago" SelectedIndex="0" Margin="88,7,10,7">
+        <TextBlock Grid.Row="3" Grid.Column="2" Height="23" HorizontalAlignment="Left" Name="txbPagado" Text="   Pagado" VerticalAlignment="Center" />
+        <TextBox Grid.Row="3" Grid.Column="2" Height="23" HorizontalAlignment="Right" Text="0.00" PreviewTextInput="txtPagado_PreviewTextInput" LostFocus="txtPagado_LostFocus"  Name="txtPagado" Width="142" TextChanged="txtPagado_TextChanged" Margin="0,6,14,6" TextAlignment="Center" />
+
+        <TextBlock Grid.Row="3" Grid.Column="3" Height="23" HorizontalAlignment="Left" Name="txbInsoluto" Text="   Saldo Insoluto" VerticalAlignment="Center" />
+        <TextBox Grid.Row="3" Grid.Column="3" Height="23" HorizontalAlignment="Right" Text="0.00" PreviewTextInput="txtInsouto_PreviewTextInput" LostFocus="txtInsouto_LostFocus" Name="txtInsouto" Width="142" TextChanged="txtInsouto_TextChanged" Margin="0,6,14,6" TextAlignment="Center" />
+
+
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Height="23" HorizontalAlignment="Left" Name="txbNuOperacion" Text="   # Operacion" VerticalAlignment="Center" />
+        <TextBox Grid.Row="4" Grid.Column="0" Height="23" HorizontalAlignment="Right" TextAlignment="Center" Name="txtNuOperacion" Text="01" Width="142" TextChanged="txtNuOperacion_TextChanged" Margin="0,6,14,6" />
+
+        <TextBlock Grid.Row="4" Grid.Column="1" Height="23" HorizontalAlignment="Left" Name="txbParcialidad" Text="   Parcialidad" VerticalAlignment="Center" />
+        <TextBox Grid.Row="4" Grid.Column="1" Height="23" HorizontalAlignment="Right" Name="txtParcialidad" Width="142" TextChanged="txtParcialidad_TextChanged" Margin="0,6,14,6" />
+
+
+
+        <TextBlock Grid.Row="4" Grid.Column="2" Visibility="Collapsed" x:Name="lblStatus" HorizontalAlignment="Left" Width="100" Text="    Status" Margin="0,6,0,0"></TextBlock>
+        <ComboBox Grid.Row="4" Grid.Column="2"  Visibility="Collapsed" HorizontalAlignment="Right"  x:Name="cmbStausPago" SelectedIndex="0" Width="168" Margin="0,6,14,6">
+            <ComboBoxItem>
+                <TextBlock>PAGADA</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>PAGO PARCIAL</TextBlock>
+            </ComboBoxItem>
+
+        </ComboBox>
+
+
+        <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Text="    Forma Pago:" Width="86" Margin="0,10" />
+
+        <ComboBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" x:Name="cmbFormaPago" SelectedIndex="0" Margin="88,7,10,7">
             <ComboBoxItem>
                 <TextBlock>01-EFECTIVO</TextBlock>
             </ComboBoxItem>
@@ -174,7 +178,7 @@
         <Button Visibility="Collapsed"  Grid.Row="8" HorizontalAlignment="Center" Name="btnTimbrar" VerticalAlignment="Center" Click="btnTimbrar_Click" Margin="64,3,50,1" TabIndex="7" Width="130">
             <DockPanel>
                 <Image Source="/wpfEFac;component/Images/Icons/approveCFD.ico"/>
-                <TextBlock  VerticalAlignment="center">Aprobar Pago </TextBlock>
+                <TextBlock  VerticalAlignment="center">Aprobar Pago</TextBlock>
             </DockPanel>
         </Button>
 
@@ -192,29 +196,42 @@
             </DockPanel>
         </Button>
 
-        <Button  Grid.Row="8" Grid.Column="3" HorizontalAlignment="Center" Name="btnGuardar" VerticalAlignment="Center" Click="btnGuardar_Click" Margin="64,3,50,1" TabIndex="7" Width="130">
+        <Button  Grid.Row="6" Grid.Column="3" HorizontalAlignment="Center" Name="btnGuardar" VerticalAlignment="Center" Click="btnGuardar_Click" Margin="64,3,50,1" TabIndex="7" Width="130">
             <DockPanel>
                 <Image Source="/wpfEFac;component/Images/Icons/save.ico"/>
                 <TextBlock  VerticalAlignment="center">Guardar</TextBlock>
             </DockPanel>
         </Button>
 
-        <TextBlock Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text=" Cta Ordenante:" Width="86" Margin="0,0,0,5" Height="20" />
+        <TextBlock Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text=" Cta Ordenante:" Width="86" Margin="0,0,0,5" Height="20" />
 
-        <ComboBox Grid.Row="8" VerticalAlignment="Center" x:Name="cmbRfcOrigen" SelectedIndex="0" Margin="88,3,8,1" Height="21" />
+        <ComboBox Grid.Row="5" VerticalAlignment="Center" x:Name="cmbRfcOrigen" SelectedIndex="0" Margin="88,3,8,1" Height="21" />
 
-        <TextBlock Grid.Row="8" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Text=" Cta Beneficiario:" Width="86" Margin="0,0,0,5" Height="20" />
+        <TextBlock Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Text=" Cta Beneficiario:" Width="86" Margin="0,0,0,5" Height="20" />
 
-        <ComboBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" x:Name="cmbRfcDestino" SelectedIndex="0" Margin="89,3,8,1" Height="21" />
-         
-       
+        <ComboBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" x:Name="cmbRfcDestino" SelectedIndex="0" Margin="89,3,8,1" Height="21" />
+
+        <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Text="    Moneda:" Width="86" Margin="0,10" />
+
+        <ComboBox Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" x:Name="cmbMoneda" DropDownClosed="cmbMoneda_DropDownClosed" SelectedIndex="0" Margin="88,7,10,7">
+            <ComboBoxItem>
+                <TextBlock>MXN-PESO MEXICANO</TextBlock>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock>USD-DOLAR ESTADOUNIDENSE</TextBlock>
+            </ComboBoxItem>
+        </ComboBox>
+
+
+        <TextBlock Grid.Row="5" Grid.Column="3" Height="23" HorizontalAlignment="Left" Name="txbTipoCambio" Text=" Tipo Cambio" VerticalAlignment="Center" Visibility="Collapsed" />
+        <TextBox Grid.Row="5" Grid.Column="3" Height="23" HorizontalAlignment="Right" TextAlignment="Center" Name="txtTipoCambio" Text="1" Width="142" Visibility="Collapsed" Margin="0,6,14,6" />
+
 
         <DataGrid x:Name="dtgFacturasPago" Grid.Row="9" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{Binding MyData}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Foreground="Black" Width="*" Header="intId_factura" Binding="{Binding intID, Mode=TwoWay}" Visibility="Collapsed" IsReadOnly="false" />
+                <DataGridTextColumn Foreground="Black" Width="*" Header="intId_factura" Binding="{Binding intID, Mode=TwoWay}" Visibility="Hidden" IsReadOnly="false" />
                 <DataGridTextColumn Foreground="Black" Width="*" Header="Serie" Binding="{Binding strSerie, Mode=TwoWay}" Visibility="Collapsed" IsReadOnly="false" />
                 <DataGridTextColumn Foreground="Black" Width="*" Header="Folio" Binding="{Binding strFolio, Mode=TwoWay}" IsReadOnly="false" />
-                <DataGridTextColumn Foreground="Black" Width="*" Header="Forma pago"  Binding="{Binding strFormaPago, Mode=TwoWay}" IsReadOnly="false"/>
                 <DataGridTextColumn Foreground="Black" Width="*" Header="UUID"  Binding="{Binding strUUID, Mode=TwoWay}" IsReadOnly="false"/>
                 <DataGridTextColumn Foreground="Black" Width="*" Header="Fecha"  Binding="{Binding dtmFecha, Mode=TwoWay}" IsReadOnly="false"/>
                 <DataGridTextColumn Foreground="Black" Width="*" Header="Importe factura"  Binding="{Binding dcmImporte}" IsReadOnly="True"/>
@@ -231,7 +248,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-<!--
+        <!--
         <DataGrid AutoGenerateColumns="False" Grid.Row="9" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Name="dtgFacturasPago">
             <DataGrid.Columns>
                 
@@ -302,3 +319,4 @@
 
     </Grid>
 </Window>
+

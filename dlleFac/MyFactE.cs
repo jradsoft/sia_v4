@@ -152,8 +152,8 @@ namespace dlleFac
                         byte[] rawData = File.ReadAllBytes("c:\\myfacturae\\adesoftCfdi.zip");
                         //SIFEIService myService = new SIFEIService(); // Sifei
                         //CFDiService myService = new CFDiService(); //Edicomn
-                      //  ServicioTimbradoWS myService = new ServicioTimbradoWS();//facturalo productivo
-                        ServicioTimbradoWS myServiceTest = new ServicioTimbradoWS();//facturalo Test
+                        ServicioTimbradoWS myService = new ServicioTimbradoWS();//facturalo productivo
+                        //ServicioTimbradoWS myServiceTest = new ServicioTimbradoWS();//facturalo Test
                         //byte[] MyCfdiTimbrado = null;
                         byte[] MyTFD = null;
 
@@ -173,9 +173,9 @@ namespace dlleFac
                             ExecuteCommandSync("delete c:\\myfacturae\\adesoftCfdi.zip");
 
 
-                            //MyCfdiTimbrado = myService.timbrar(idEquipo, XmlString);  //Productivo
+                            MyCfdiTimbrado = myService.timbrar(idEquipo, XmlString);  //Productivo
 
-                            MyCfdiTimbrado = myServiceTest.timbrar("0955d485e26c486392909ee79f5ad5c3", XmlString);  //test
+                           // MyCfdiTimbrado = myServiceTest.timbrar("0955d485e26c486392909ee79f5ad5c3", XmlString);  //test
 
 
 
@@ -457,7 +457,7 @@ namespace dlleFac
                     if (intTipoComprobante == 6)
                     {
 
-                        newAttr.Value = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/Pagos http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos10.xsd ";
+                        newAttr.Value = "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd ";
                     }
 
 
@@ -635,7 +635,7 @@ namespace dlleFac
 
             if (idComprobante == 6)
             {
-                xmlNameSpace.Add("pago10", "http://www.sat.gob.mx/Pagos");
+                xmlNameSpace.Add("pago20", "http://www.sat.gob.mx/Pagos20");
             }
 
            

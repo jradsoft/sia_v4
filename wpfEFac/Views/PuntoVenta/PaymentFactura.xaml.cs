@@ -14,9 +14,7 @@ using wpfEFac.Models;
 using wpfEFac.Helpers;
 using System.Text.RegularExpressions;
 using System.Globalization;
-using System.Xml.Serialization;
-using System.IO;
-using System.Xml;
+using Newtonsoft.Json;
 
 
 namespace wpfEFac.Views.PuntoVenta
@@ -31,24 +29,32 @@ namespace wpfEFac.Views.PuntoVenta
         eFacDBEntities db = new eFacDBEntities();
         private decimal sumaTotal;
         Factura myF;
-        public PaymentFactura()
-        {
+        string txbFecha = "";
+        string rfcOrde = "";
+        string rfcBen = "";
+        private string jsonGrid = "";
+        Factura myFact;
 
+        public PaymentFactura(Factura f)
+        {
+            myFact = f;
 
             InitializeComponent();
             entidad = new eFacDBEntities();
             pfvm = new PreFacturaViewModel();
 
-            txtMonto.IsEnabled = false;
+          //  txtMonto.IsEnabled = false;
 
          
              this.dtpFechaPago.SelectedDate = DateTime.Now;
 
              wpfEFac.Models.Clientes c = new Models.Clientes();
-             cmbClientes.ItemsSource = entidad.Clientes.OrderBy(x => x.strRazonSocial);
+             cmbClientes.ItemsSource = entidad.Clientes.OrderBy(x => x.strNombreComercial);
              cmbClientes.DisplayMemberPath = "strRazonSocial";
              cmbClientes.SelectedValuePath = "intID";
              cmbClientes.SelectedValue = c.intID;
+             
+
 
 
              cmbRfcOrigen.Items.Clear();
@@ -60,6 +66,71 @@ namespace wpfEFac.Views.PuntoVenta
              cmbRfcDestino.ItemsSource = FactCat.getListBancos();
              cmbRfcDestino.DisplayMemberPath = "descripcion";
              cmbRfcDestino.SelectedValuePath = "clave";
+
+             if (f != null) {
+
+                 try
+                 {
+
+                     wpfEFac.Models.Clientes edtCli = new Models.Clientes();
+                     cmbClientes.ItemsSource = entidad.Clientes.Where(e=> e.intID == f.intID_Cliente);
+                     cmbClientes.DisplayMemberPath = "strRazonSocial";
+                     cmbClientes.SelectedValuePath = "intID";
+                     cmbClientes.SelectedValue = edtCli.intID;
+
+
+                     DataCompPago.DataComplementoPago dataComPago = JsonConvert.DeserializeObject<DataCompPago.DataComplementoPago>(f.strCadenaOriginal);
+
+                     //cmbClientes.Visibility = System.Windows.Visibility.Hidden;
+                     dtpFechaPago.Text = dataComPago.dtmFechaPago;
+                     txtMonto.Text = dataComPago.dcmTotal.ToString();
+                     cmbRfcOrigen.SelectedValue = dataComPago.rfcCtaOrdenante;
+                     cmbRfcDestino.SelectedValue = dataComPago.rfcCtaBeneficiario;
+                     txtNuOperacion.Text = dataComPago.strNumOperacion;
+
+
+                     wpfEFac.Models.Factura fy = new Models.Factura();
+                     cmbFacturas.ItemsSource = entidad.Factura.Where(a => a.intID_Cliente == f.intID_Cliente && a.intID_Tipo_CFD != 6 && a.chrStatus == "A" && a.strNumero != "PAGADA");
+                     //Folios myFolio = f.Certificates.Folios.Where(p=>p.chrStatus == "A" && p.intIDtipoCFD == f.intID_Tipo_CFD).First();
+                     cmbFacturas.DisplayMemberPath = "strFolio";
+                     cmbFacturas.SelectedValuePath = "intID";
+                     cmbFacturas.SelectedValue = fy.intID;
+
+
+                     foreach (var i in dataComPago.fillData)
+                     {
+
+                         dtgFacturasPago.Items.Add(new Item()
+                         {
+
+                             intId_factura = i.intId_factura,
+                             strFolio = i.strFolio,
+                             strSerie = i.strSerie,
+                             strUUID = i.strUUID,
+                             dtmFecha = i.dtmFecha,
+                             strFormaPago = i.strFormaPago,
+                             dcmImporte = i.dcmImporte,
+                             dcmPagado = i.dcmPagado,
+                             dcmPendiente = i.dcmPendiente,
+                             dcmMontoFact = i.dcmMontoFact
+
+
+
+                         });
+
+
+                     }
+
+                 }
+                 catch (Exception ex) {
+
+                     MessageBox.Show("error al recuperar datos de complemento " + ex);
+                 }
+                 
+
+
+
+             }
             
         }
 
@@ -168,12 +239,13 @@ namespace wpfEFac.Views.PuntoVenta
             public int intId_factura { get; set; }
             public string strFolio { get; set; }
             public string strSerie { get; set; }
-            public string strUUID{ get; set; }
+            public string strUUID { get; set; }
             public string dtmFecha { get; set; }
+            public string strFormaPago { get; set; }
             public decimal dcmImporte { get; set; }
             public decimal dcmPagado { get; set; }
             public decimal dcmPendiente { get; set; }
-            public string strFormaPago { get; set; }
+            public decimal dcmMontoFact { get; set; }
 
         }
 
@@ -182,7 +254,7 @@ namespace wpfEFac.Views.PuntoVenta
 
             try
             {
-                wpfEFac.Models.Factura f = new Models.Factura();
+                
 
                 var idFactura = cmbFacturas.SelectedValue;
                 int facturaId = int.Parse(idFactura.ToString());
@@ -190,8 +262,16 @@ namespace wpfEFac.Views.PuntoVenta
 
                 var getFactura = entidad.Factura.Where(a => a.intID == facturaId).FirstOrDefault();
 
-                SumaTotal(decimal.Parse(txtPagado.Text));
 
+                
+
+                            SumaTotal(decimal.Parse(txtPagado.Text));
+                        
+                        
+                
+                        
+                    
+                
 
 
 
@@ -203,10 +283,11 @@ namespace wpfEFac.Views.PuntoVenta
                     strFolio = getFactura.strFolio,
                     strUUID = getFactura.strSelloDigital,
                     dtmFecha = getFactura.dtmFecha.ToString(),
+                    strFormaPago = cmbFormaPago.Text,
                     dcmImporte = decimal.Parse(txtSanterior.Text),
                     dcmPagado = decimal.Parse(txtPagado.Text),
                     dcmPendiente = decimal.Parse(txtInsouto.Text),
-                    strFormaPago = cmbFormaPago.Text
+                    dcmMontoFact = decimal.Parse(txtMontoFactura.Text),
                 });
 
                 txtSanterior.Text = "0.00";
@@ -256,7 +337,7 @@ namespace wpfEFac.Views.PuntoVenta
 
             string idFacDet = getFactura.intID.ToString();
 
-            List<Detalle_Factura> detfact = db.Detalle_Factura.Where(df => df.strConcepto.Contains(idFacDet) && df.strUnidad.Equals("ACT-Actividad")).ToList();
+            List<Detalle_Factura> detfact = db.Detalle_Factura.Where(df => df.strConcepto.Contains(idFacDet) && df.intID_Producto==1500).ToList();
             int intPart = 1;
             foreach (var item in detfact)
             {
@@ -264,10 +345,6 @@ namespace wpfEFac.Views.PuntoVenta
                
 
             }
-
-
-         
-            
             
             decimal saldoPendiente=0;
             if (getFactura.dcmDescuento > 0) {
@@ -305,14 +382,19 @@ namespace wpfEFac.Views.PuntoVenta
 
         }
 
-        
-
         void cmbClientes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var ClientID =cmbClientes.SelectedValue;
             int idCLiente = int.Parse(ClientID.ToString());
+
+            if (myFact != null) {
+
+                idCLiente = myFact.intID_Cliente;
+            
+            }
+
             wpfEFac.Models.Factura f = new Models.Factura();
-            cmbFacturas.ItemsSource = entidad.Factura.Where(a => a.intID_Cliente == idCLiente && a.chrStatus == "A" && a.strNumero != "PAGADA");
+            cmbFacturas.ItemsSource = entidad.Factura.Where(a => a.intID_Cliente == idCLiente && a.intID_Tipo_CFD != 6  && a.chrStatus == "A" && a.strNumero != "PAGADA");
             //Folios myFolio = f.Certificates.Folios.Where(p=>p.chrStatus == "A" && p.intIDtipoCFD == f.intID_Tipo_CFD).First();
             cmbFacturas.DisplayMemberPath = "strFolio";
             cmbFacturas.SelectedValuePath = "intID";
@@ -342,16 +424,40 @@ namespace wpfEFac.Views.PuntoVenta
                 if (selectedItem != null)
                 {
                     dtgFacturasPago.Items.Remove(selectedItem);
+                    var id = (Item)selectedItem;
 
+                    Factura updateStatus = db.Factura.FirstOrDefault(fd => fd.intID == id.intId_factura);  // busca facturas de complemento
+                    updateStatus.strNumero = "";                                                // edita PAGADO O PARCIAL
+                    updateStatus.dtmFechaEnvio = null;                                          // elimina fecha de pago
+                    db.SaveChanges();
+
+
+                    wpfEFac.Models.Factura f = new Models.Factura();
+                    cmbFacturas.ItemsSource = entidad.Factura.Where(a => a.intID_Cliente == myFact.intID_Cliente && a.intID_Tipo_CFD != 6 && a.chrStatus == "A" && a.strNumero != "PAGADA");
+                    //Folios myFolio = f.Certificates.Folios.Where(p=>p.chrStatus == "A" && p.intIDtipoCFD == f.intID_Tipo_CFD).First();
+                    cmbFacturas.DisplayMemberPath = "strFolio";
+                    cmbFacturas.SelectedValuePath = "intID";
+                    cmbFacturas.SelectedValue = f.intID;
+                    
+                  
+                   
                     decimal sum = 0m;
                     for (int i = 0; i < dtgFacturasPago.Items.Count; i++)
                     {
                         sumaTotal = 0;
                         sum += (decimal.Parse((dtgFacturasPago.Columns[4].GetCellContent(dtgFacturasPago.Items[i]) as TextBlock).Text));
+
+                       
+                       
+
+
                     }
 
                     sumaTotal = sum;
                     txtMonto.Text = sum.ToString("N2");
+ 
+
+                    
 
                 }
             }
@@ -375,16 +481,37 @@ namespace wpfEFac.Views.PuntoVenta
             try
             {
 
+                if (myFact != null) {
+                    if (cmbClientes.SelectedItem== null) {
+                        throw new Exception("Seleccione Cliente.");
+                    
+                    }
+                
+                }
+
+
             DateTime FechaPago = dtpFechaPago.SelectedDate.Value;
 
             int intHR = int.Parse(txthr.Text);
             int intMin = int.Parse(txtmin.Text);
             string HoraMin = " " + txthr.Text.ToString().PadLeft(2, '0') + ":" + txtmin.Text.ToString().PadLeft(2, '0');
-             String txbFecha = FechaPago.ToString("yyyy-MM-dd") + HoraMin;
-
             
-                
-             
+            txbFecha = FechaPago.ToString("yyyy-MM-dd") + HoraMin;
+
+            if (cmbRfcOrigen.SelectedItem != null)
+            {
+
+                rfcOrde = cmbRfcOrigen.SelectedValue.ToString();
+            }
+            if (cmbRfcDestino.SelectedItem != null)
+            {
+
+                rfcBen = cmbRfcDestino.SelectedValue.ToString();
+            }
+
+
+
+             fillJson();
 
 
              DateTime dt = DateTime.ParseExact(txbFecha, "yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.CurrentCulture);
@@ -403,106 +530,194 @@ namespace wpfEFac.Views.PuntoVenta
 
             RetriveComprobanteFiscalDigital(6, cfd, emisor, receptor, direccionEmisor, direccionReceptor, co, conceptosDll, conceptosPrefactura);
 
-           
+            string isFactoraje = "";
 
+            if (chbFactoraje.IsChecked == true) {
+                isFactoraje = "FACTORAJE";
             
+            }
+            if (myFact == null)
+            {
 
-                string rfcOrde = "";
-                string rfcBen = "";
-                if (cmbRfcOrigen.SelectedItem != null) { 
-                
-                    rfcOrde= cmbRfcOrigen.SelectedValue.ToString();
-                }
-                if (cmbRfcDestino.SelectedItem != null)
+                if (cfd.SaveFactura(6,
+                    emisor.intID,
+                    co.Serie,
+                    co.Folio,
+                    fechaPago,// DateTime.Parse(co.Fecha.Replace("T", " ")),
+                    Convert.ToInt32(App.Current.Properties["idUsuario"]),
+                    receptor.intID,
+                    // co.FormaPago,
+                    cmbFormaPago.Text.Substring(0, 2),
+                    isFactoraje,// txtEncabezado.Text,
+                    decimal.Parse("0.000000"),
+                    decimal.Parse("0.000000"),
+                    decimal.Parse("0.000000"),
+                    decimal.Parse(txtMonto.Text),
+                    "",//txtObservaciones.Text,
+                    "",//txtImpuestosAdicionales.Text,
+                    "",//uuidSave,
+                    "",//cmbTipoRelacion.Text.Substring(0,2),                            
+                    emisor.CFD.First().intID,
+                    jsonGrid,
+                    conceptosPrefactura,
+                    decimal.Parse("0.000000"),
+                    decimal.Parse("0.000000"),
+                    decimal.Parse("0.000000"),
+                    txtParcialidad.Text,//txtCondicionesPago.Text,
+                    "PPD",//cmbMetodoPago.Text.Substring(0, 3),
+                    "CP01",//cmbUsoCfdi.Text.Substring(0, 3),
+                    "XXX",//txtDivisa.Text,
+                    decimal.Parse("0.000000"),
+                    rfcOrde,//txtProveeedor.Text,
+                    txtNuOperacion.Text,//txtPedido.Text,
+                    rfcBen,//txtCC.Text,
+                    "",//txtDestinatario.Text,
+                    "",//txtRfcDestinatario.Text,
+                    "",//txtDomicilioDestinatario.Text,
+                    "",//txtEntregarEn.Text, 
+                    null
+                    //myAddenda
+                    ))
                 {
 
-                    rfcBen = cmbRfcDestino.SelectedValue.ToString();
-                }
-
-                
-                
 
 
 
-                        if (cfd.SaveFactura(6,
-                            emisor.intID,
-                            co.Serie,
-                            co.Folio,
-                            fechaPago,// DateTime.Parse(co.Fecha.Replace("T", " ")),
-                            Convert.ToInt32(App.Current.Properties["idUsuario"]),
-                            receptor.intID,
-                           // co.FormaPago,
-                            cmbFormaPago.Text.Substring(0, 2),
-                           "",// txtEncabezado.Text,
-                            decimal.Parse("0.000000"),
-                            decimal.Parse("0.000000"),
-                            decimal.Parse("0.000000"),
-                            decimal.Parse(txtMonto.Text),
-                            "",//txtObservaciones.Text,
-                            "",//txtImpuestosAdicionales.Text,
-                            "",//uuidSave,
-                            "",//cmbTipoRelacion.Text.Substring(0,2),                            
-                            emisor.CFD.First().intID,
-                            "",
-                            conceptosPrefactura,
-                            decimal.Parse("0.000000"),
-                            decimal.Parse("0.000000"),
-                            decimal.Parse("0.000000"),
-                            txtParcialidad.Text,//txtCondicionesPago.Text,
-                            "PPD",//cmbMetodoPago.Text.Substring(0, 3),
-                            "P01",//cmbUsoCfdi.Text.Substring(0, 3),
-                            "XXX",//txtDivisa.Text,
-                            decimal.Parse("0.000000"),
-                            rfcOrde,//txtProveeedor.Text,
-                            txtNuOperacion.Text,//txtPedido.Text,
-                            rfcBen,//txtCC.Text,
-                            "",//txtDestinatario.Text,
-                            "",//txtRfcDestinatario.Text,
-                            "",//txtDomicilioDestinatario.Text,
-                            "",//txtEntregarEn.Text, 
-                            null
-                            
-                            ))
+                    foreach (var item in dtgFacturasPago.Items)
+                    {
 
+                        Item concepto = item as Item;
+                        Factura factura = db.Factura.Where(fac => fac.intID == concepto.intId_factura).First();
+                        if (concepto.dcmPendiente > 0)
                         {
-
-
-                           
-
-                            foreach (var item in dtgFacturasPago.Items)
-                            {
-                               
-                                Item concepto = item as Item;
-                                Factura factura = db.Factura.Where(fac => fac.intID == concepto.intId_factura).First();
-                                if (concepto.dcmPendiente > 0)
-                                {
-                                    factura.dcmDescuento = concepto.dcmPendiente;
-                                    factura.strNumero = "PAGO PARCIAL";
-                                    factura.dtmFechaEnvio = fechaPago;
-                                    db.SaveChanges();
-                                }
-                                else {
-                                    factura.dcmDescuento = decimal.Parse("0");
-                                    factura.strNumero = "PAGADA";
-                                    factura.dtmFechaEnvio = fechaPago;
-                                    db.SaveChanges();
-                                
-                                }
-                               
-                            }
-
-
-                            
-                            MessageBox.Show("Guardado con exito", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                            DialogResult = true;
-                            
+                            factura.dcmDescuento = concepto.dcmPendiente;
+                            factura.strNumero = "PAGO PARCIAL";
+                            factura.dtmFechaEnvio = fechaPago;
+                            db.SaveChanges();
                         }
                         else
                         {
-                            MessageBox.Show("Lo sentimos ocurrio un error intentelo de nuevo", "Guardar",
-                                MessageBoxButton.OK, MessageBoxImage.Error);
+                            factura.dcmDescuento = decimal.Parse("0");
+                            factura.strNumero = "PAGADA";
+                            factura.dtmFechaEnvio = fechaPago;
+                            db.SaveChanges();
+
                         }
+
+                    }
+
+
+
+                    MessageBox.Show("Guardado con exito", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    DialogResult = true;
+
+                }
+           
+
+
+
+            else
+            {
+                MessageBox.Show("Lo sentimos ocurrio un error intentelo de nuevo", "Guardar",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+
+            }
+            else {
+
+                
+
+                if (cfd.UpdateFactura(myFact.intID, 6,
+                          emisor.intID,
+                          co.Serie,
+                          co.Folio,
+                          fechaPago,// DateTime.Parse(co.Fecha.Replace("T", " ")),
+                          Convert.ToInt32(App.Current.Properties["idUsuario"]),
+                          receptor.intID,
+                                    // co.FormaPago,
+                          cmbFormaPago.Text.Substring(0, 2),
+                          isFactoraje,// txtEncabezado.Text,
+                          decimal.Parse("0.000000"),
+                          decimal.Parse("0.000000"),
+                          decimal.Parse("0.000000"),
+                          decimal.Parse(txtMonto.Text),
+                          "",//txtObservaciones.Text,
+                          "",//txtImpuestosAdicionales.Text,
+                          "",//uuidSave,
+                          "",//cmbTipoRelacion.Text.Substring(0,2),                            
+                          emisor.CFD.First().intID,
+                          jsonGrid,
+                          conceptosPrefactura,
+                          decimal.Parse("0.000000"),
+                          decimal.Parse("0.000000"),
+                          decimal.Parse("0.000000"),
+                          txtParcialidad.Text,//txtCondicionesPago.Text,
+                          "PPD",//cmbMetodoPago.Text.Substring(0, 3),
+                          "P01",//cmbUsoCfdi.Text.Substring(0, 3),
+                          "XXX",//txtDivisa.Text,
+                          decimal.Parse("0.000000"),
+                          rfcOrde,//txtProveeedor.Text,
+                          txtNuOperacion.Text,//txtPedido.Text,
+                          rfcBen,//txtCC.Text,
+                          "",//txtDestinatario.Text,
+                          "",//txtRfcDestinatario.Text,
+                          "",//txtDomicilioDestinatario.Text,
+                          "",//txtEntregarEn.Text, 
+                          null
+                         
+                                    
+                          ))
+                {
+
+
+
+
+                    foreach (var item in dtgFacturasPago.Items)
+                    {
+
+                        Item concepto = item as Item;
+                        Factura factura = db.Factura.Where(fac => fac.intID == concepto.intId_factura).First();
+                        if (concepto.dcmPendiente > 0)
+                        {
+                            factura.dcmDescuento = concepto.dcmPendiente;
+                            factura.strNumero = "PAGO PARCIAL";
+                            factura.dtmFechaEnvio = fechaPago;
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            factura.dcmDescuento = decimal.Parse("0");
+                            factura.strNumero = "PAGADA";
+                            factura.dtmFechaEnvio = fechaPago;
+                            db.SaveChanges();
+
+                        }
+
+                    }
+
+
+
+                    MessageBox.Show("Guardado con exito", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    DialogResult = true;
+
+                }
+
+
+
+
+                else
+                {
+                    MessageBox.Show("Lo sentimos ocurrio un error intentelo de nuevo", "Guardar",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            
+            
+            
+            
+            }
                     }
                     catch (Exception error)
                     {
@@ -516,10 +731,11 @@ namespace wpfEFac.Views.PuntoVenta
         void GetEncabezadoCFD(out Models.Empresa emisor, out Models.Clientes receptor, out Direcciones_Fiscales direccionEmisor, out Direcciones_Fiscales direccionReceptor)
         {
             emisor = pfvm.GetEmpresa(Convert.ToInt32(App.Current.Properties["idUsuario"]));
-            //  emisor = (wpfEFac.Models.Clientes)atcNombreCliente1.SelectedItem;
             receptor = (wpfEFac.Models.Clientes)cmbClientes.SelectedItem;
-            direccionEmisor = pfvm.GetDireccionEmpresa(emisor.intID);
+
             direccionReceptor = pfvm.GetDireccionCliente(receptor.intID);
+            direccionEmisor = pfvm.GetDireccionEmpresa(emisor.intID);
+           
         }
 
         void RetriveComprobanteFiscalDigital(int intTipoComprobante, CFDModels cfd, Models.Empresa emisor, Models.Clientes receptor, Direcciones_Fiscales direccionEmisor, Direcciones_Fiscales direccionReceptor, dlleFac.ComprobanteFiscalDigital co, List<dlleFac.Concepto> conceptos, List<ConceptoPreFactura> conceptoPrefactura)
@@ -651,9 +867,7 @@ namespace wpfEFac.Views.PuntoVenta
                 conceptoPrefactura.dcmRetIVA = decimal.Parse("0.00");
                 conceptoPrefactura.dcmRetISR = decimal.Parse("0.00");
                 conceptoPrefactura.dcmRetIEPS = decimal.Parse("0.00");
-
-                conceptoPrefactura.strPartida = concepto.strUUID+"|"+concepto.strFolio+"|"+concepto.strSerie+"|"+concepto.strFormaPago;
-
+                conceptoPrefactura.strPartida = concepto.strUUID + "|" + concepto.strFolio + "|" + concepto.strSerie + "|" + concepto.strFormaPago + "|" + concepto.dcmMontoFact + "|" + cmbMoneda.Text + "|" + txtTipoCambio.Text;
                 conceptosPrefactura.Add(conceptoPrefactura);
             }
         }
@@ -743,5 +957,81 @@ namespace wpfEFac.Views.PuntoVenta
             cmbFacturas.SelectedValuePath = "intID";
             cmbFacturas.SelectedValue = f.intID;
         }
+
+        private void fillJson() {
+             
+            try
+            {
+
+                DataCompPago.DataComplementoPago myDatagrid = new DataCompPago.DataComplementoPago();
+
+               
+               // DataCompPago.fillDataCompPago myData = new DataCompPago.fillDataCompPago();
+                List<DataCompPago.fillDataCompPago> fillData = new List<DataCompPago.fillDataCompPago>();
+
+                foreach (var item in dtgFacturasPago.Items) {
+                  
+                    
+
+                     Item concepto = item as Item;
+
+
+                     fillData.Add(new DataCompPago.fillDataCompPago { 
+                           intId_factura = concepto.intId_factura,
+                           strFolio = concepto.strFolio,
+                           strSerie = concepto.strSerie,
+                           strUUID = concepto.strUUID,
+                           dtmFecha = concepto.dtmFecha,
+                           strFormaPago = concepto.strFormaPago,
+                           dcmImporte = concepto.dcmImporte,
+                           dcmPagado = concepto.dcmPagado,
+                           dcmPendiente = concepto.dcmPendiente,
+                           dcmMontoFact = concepto.dcmMontoFact,
+                     
+                     
+                     
+                     });
+                 }
+ 
+
+                myDatagrid.fillData = fillData;
+                myDatagrid.dcmTotal = decimal.Parse(txtMonto.Text);
+                myDatagrid.dtmFechaPago = txbFecha;
+                myDatagrid.rfcCtaOrdenante = rfcOrde;
+                myDatagrid.rfcCtaBeneficiario = rfcBen;
+                myDatagrid.strNumOperacion = txtNuOperacion.Text;
+                myDatagrid.strMoneda = cmbMoneda.Text;
+
+
+                jsonGrid = JsonConvert.SerializeObject(myDatagrid);
+
+            }
+            catch (Exception ex) { }
+        
+        
+        
+        }
+
+        private void cmbMoneda_DropDownClosed(object sender, EventArgs e)
+        {
+            if (cmbMoneda.SelectedIndex == 1)
+            {
+
+                txbTipoCambio.Visibility = System.Windows.Visibility.Visible;
+                txtTipoCambio.Visibility = System.Windows.Visibility.Visible;
+
+
+            }
+            else {
+
+                txbTipoCambio.Visibility = System.Windows.Visibility.Collapsed;
+                txtTipoCambio.Visibility = System.Windows.Visibility.Collapsed;
+                txtTipoCambio.Text = "1";
+            }
+        }
+
+
+       
+
     }
 }
