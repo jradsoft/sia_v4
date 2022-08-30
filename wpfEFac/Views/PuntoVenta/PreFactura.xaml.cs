@@ -283,9 +283,9 @@ namespace wpfEFac.Views.PuntoVenta
 
             try
             {
-                cmbPeriocidad.Text = DataPublicoGeneral.Split('-')[0];
-                txtMes.Text = DataPublicoGeneral.Split('-')[1];
-                txtAno.Text = DataPublicoGeneral.Split('-')[2];
+                cmbPeriocidad.Text = DataPublicoGeneral.Split('/')[0];
+                txtMes.Text = DataPublicoGeneral.Split('/')[1];
+                txtAno.Text = DataPublicoGeneral.Split('/')[2];
             }
             catch (Exception ex) { }
             //cmbFormaPago.Text = f.Clientes.strContacto; //f.MetodoPago;

@@ -9,6 +9,9 @@ namespace wpfEFac.Models
     {
 
         public int idFact { get; set; }
+        public string SF { get; set; }
+        public string strXML { get; set; }
+        public string strPDF { get; set; }
       
     }
 }

@@ -1582,7 +1582,7 @@ namespace wpfEFac.Views
 
                         decimal impuestoRetIva = myConceptoTranslado.Base * item.retIVA.Value;
 
-                        myConceptoRetencionIva.Importe = decimal.Parse(impuestoRetIva.ToString("#0.00"));
+                        myConceptoRetencionIva.Importe = decimal.Parse(impuestoRetIva.ToString("#0.000"));
 
                         sumaRetIva += myConceptoRetencionIva.Importe;
                     
@@ -3119,32 +3119,34 @@ namespace wpfEFac.Views
             {
                 Factura f = (Factura)dtgFacturasHistorico.SelectedItem;
 
-                if ((f.chrStatus == "A") || (f.chrStatus == "P"))
+                IList items = dtgFacturasHistorico.SelectedItems;
+
+                List<Relacionados> itemsId = new List<Relacionados>();
+
+
+
+                foreach (Factura item in items)
                 {
-                    EMail.Email emailwindow = new EMail.Email(f);
+                    itemsId.Add(new Relacionados
+                    {
+                        idFact = item.intID,
+                        SF = item.strSerie + item.strFolio,
+                        strXML = item.strXMLpath,
+                        strPDF = item.strPDFpath
+
+                    });
+                }
+
+
+                if (f.chrStatus == "A")
+                {
+                    EMail.Email emailwindow = new EMail.Email(itemsId);
 
                     emailwindow.Show();
 
-                    // Messenger.Default.Send(f);
-
-                    //if (MailSender.SendMail(f.Empresa.strEmail,
-                    //    f.Empresa.ConfiguracionEmail.First().strPasswordEmailEmpresa,
-                    //    //GetRecivers(f.Empresa.ConfiguracionEmail.First(), f.Clientes.strEmail),
-                    //    new List<string>() { "adolfo.centeno@itesm.mx" },
-                    //    "||CFD|" + f.Empresa.strRFC + "|" + f.dtmFecha + "|" + f.strFolio + "||",
-                    //    "<html><body><b><font size='+1'>Este mensaje es un envio automatico de la " +
-                    //    "aplicacion MyFacturaE</font></b><br /><br />" +
-                    //    "Contribuyente: " + f.Empresa.strRazonSocial + "<br /><br />" +
-                    //    "Fecha: " + f.dtmFecha.ToString() + "<br /><br />" +
-                    //    "Receptor: " + f.Clientes.strNombreComercial + "<br /><br />" +
-                    //    "Powered by Adesoft <A HREF =\"http://www.adesoft.com.mx/" +"\"" + ">http://www.adesoft.com.mx/</A>" + "<br /><br />" +
-                    //    "</body></html>", 
-                    //    GetAttach()))
-                    //{
-                    //    MessageBox.Show("Comprobante fiscal enviado a: " + f.Clientes.strEmail, "Exito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Messenger.Default.Send(f);
 
 
-                    //}
                 }
             }
 

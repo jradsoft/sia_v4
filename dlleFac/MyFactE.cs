@@ -515,7 +515,7 @@ namespace dlleFac
             ExecuteCommandSync("c:\\myfacturae\\xsltproc " + "c:\\myfacturae\\" + templateReportHeader + " " + fileNameOK + " > c:\\myfacturae\\header.html");
             ExecuteCommandSync("c:\\myfacturae\\xsltproc " + "c:\\myfacturae\\" + templateReport + " " + fileNameOK + " > c:\\myfacturae\\conceptos.html");
            
-                ExecuteCommandSync("c:\\myfacturae\\wkhtmltopdf.exe --footer-html c:\\myfacturae\\footer.html --footer-spacing 2 --margin-bottom 40mm --header-html  c:\\myfacturae\\header.html --header-spacing 2 --margin-top 80mm --margin-left 2mm --margin-right 2mm c:\\myfacturae\\conceptos.html " + fileNamepdfOK);
+                ExecuteCommandSync("c:\\myfacturae\\wkhtmltopdf.exe --footer-html c:\\myfacturae\\footer.html --footer-spacing 2 --margin-bottom 40mm --header-html  c:\\myfacturae\\header.html --header-spacing 2 --margin-top 90mm --margin-left 2mm --margin-right 2mm c:\\myfacturae\\conceptos.html " + fileNamepdfOK);
 
             return fileNameXmlOK + "|" + fileNamepdfOK;
         }

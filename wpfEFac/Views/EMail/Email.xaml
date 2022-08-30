@@ -51,7 +51,7 @@
         <TextBlock Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" >Asunto:</TextBlock>
 
         <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="5" VerticalAlignment="Center"
-                 Margin="5" HorizontalScrollBarVisibility="Auto" 
+                 Margin="5" HorizontalScrollBarVisibility="Auto" x:Name="txtAsunto"
                  ToolTip="Escriba el asunto del correo electronico" Text="{Binding Path=Subject, UpdateSourceTrigger=PropertyChanged}" />
 
         <Border Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5"
@@ -76,9 +76,9 @@
             </StackPanel>
         </StackPanel>
 
-        <TextBox Grid.Row="4" Grid.ColumnSpan="7" Margin="5" TextWrapping="Wrap" 
+        <TextBox x:Name="txtMensaje" Grid.Row="4" Grid.ColumnSpan="7" Margin="5" TextWrapping="Wrap" 
                  AcceptsTab="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Path=Message}"
+                 Text=""
                  ToolTip="Escriba el mensaje del correo electronico" />
 
         <Button Content="Enviar" Grid.Row="5" Grid.Column="4" VerticalAlignment="Center" Visibility="Collapsed"

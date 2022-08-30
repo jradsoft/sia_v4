@@ -160,3 +160,9 @@ C:\codeAdesoft\adesoftv4.0_sia\dlleFac\bin\Debug\dlleFac.pdb
 C:\codeAdesoft\adesoftv4.0_sia\dlleFac\obj\Debug\dlleFac.dll
 C:\codeAdesoft\adesoftv4.0_sia\dlleFac\obj\Debug\dlleFac.pdb
 C:\codeAdesoft\adesoftv4.0_sia\dlleFac\obj\Debug\dlleFac.csprojResolveAssemblyReference.cache
+L:\codeAdesoft\adesoftv4.0_sia\dlleFac\bin\Debug\dlleFac.dll.config
+L:\codeAdesoft\adesoftv4.0_sia\dlleFac\bin\Debug\dlleFac.dll
+L:\codeAdesoft\adesoftv4.0_sia\dlleFac\bin\Debug\dlleFac.pdb
+L:\codeAdesoft\adesoftv4.0_sia\dlleFac\obj\Debug\dlleFac.csprojResolveAssemblyReference.cache
+L:\codeAdesoft\adesoftv4.0_sia\dlleFac\obj\Debug\dlleFac.dll
+L:\codeAdesoft\adesoftv4.0_sia\dlleFac\obj\Debug\dlleFac.pdb
