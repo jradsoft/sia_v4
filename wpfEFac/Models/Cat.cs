@@ -21,6 +21,15 @@ namespace wpfEFac.Models
 
    }
 
+   public class ImpuestosVarios
+   {
+       public decimal porcImp { set; get; }
+       public decimal sumaBaseImp { set; get; }
+       public decimal sumaImporteImp { set; get; }
+       
+
+   }
+
    
 
    public static class FactCat {

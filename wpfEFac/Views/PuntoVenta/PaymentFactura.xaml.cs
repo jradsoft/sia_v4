@@ -964,16 +964,64 @@ namespace wpfEFac.Views.PuntoVenta
             {
 
                 DataCompPago.DataComplementoPago myDatagrid = new DataCompPago.DataComplementoPago();
-
-               
-               // DataCompPago.fillDataCompPago myData = new DataCompPago.fillDataCompPago();
                 List<DataCompPago.fillDataCompPago> fillData = new List<DataCompPago.fillDataCompPago>();
+                List<DataCompPago.DataCompPagoImpuestos> fillDataImp = new List<DataCompPago.DataCompPagoImpuestos>();
+                List<ImpuestosVarios> lstImpVarios = new List<ImpuestosVarios>();
+                
 
                 foreach (var item in dtgFacturasPago.Items) {
-                  
+
+
                     
 
                      Item concepto = item as Item;
+
+                    decimal dcmBaseDRtotal =0;
+                    decimal dcmImporteDRtotal =0;
+
+
+                     var detallFactura = entidad.Detalle_Factura.Where(d=> d.intID_Factura== concepto.intId_factura);
+
+                     
+
+                    foreach(var it in detallFactura){
+
+                        var value = lstImpVarios.Find(i => i.porcImp == it.dcmIVA);
+
+
+                        if (value == null && it.dcmIVA > 0)
+                        {
+
+                            dcmBaseDRtotal += it.dcmImporte;
+                            dcmImporteDRtotal += it.dcmImporte * it.dcmIVA.Value;
+
+                            lstImpVarios.Add(new ImpuestosVarios()
+                            {
+                                porcImp = it.dcmIVA.Value,
+                                sumaBaseImp = dcmBaseDRtotal,
+                                sumaImporteImp = dcmImporteDRtotal
+
+                             
+
+                            });
+                        }
+                        
+                   
+                        
+                    
+                    }
+
+
+                    fillDataImp.Add( new DataCompPago.DataCompPagoImpuestos{
+                        
+                        dcmBaseDR = dcmBaseDRtotal,
+                        strImpuestoDR="002",
+                        strTipoFactorDR = "Tasa",
+                        dcmTasaOCuotaDR = decimal.Parse("0.160000"),
+                        dcmImporteDR = dcmImporteDRtotal
+
+                    
+                    });
 
 
                      fillData.Add(new DataCompPago.fillDataCompPago { 
@@ -987,6 +1035,7 @@ namespace wpfEFac.Views.PuntoVenta
                            dcmPagado = concepto.dcmPagado,
                            dcmPendiente = concepto.dcmPendiente,
                            dcmMontoFact = concepto.dcmMontoFact,
+                           fillDataImpuestos = fillDataImp
                      
                      
                      

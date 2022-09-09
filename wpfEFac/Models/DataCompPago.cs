@@ -20,7 +20,16 @@ namespace wpfEFac.Models
             public decimal dcmPagado { get; set; }
             public decimal dcmPendiente { get; set; }
             public decimal dcmMontoFact { get; set; }
+            public List<DataCompPagoImpuestos> fillDataImpuestos { get; set; }
+        }
 
+        public class DataCompPagoImpuestos
+        {
+            public decimal dcmBaseDR { get; set; }
+            public string strImpuestoDR { get; set; }
+            public string strTipoFactorDR { get; set; }
+            public decimal dcmTasaOCuotaDR { get; set; }
+            public decimal dcmImporteDR { get; set; }
         }
 
         public class DataComplementoPago
