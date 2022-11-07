@@ -126,10 +126,10 @@ C:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\obj\Debug\ThoughtWorks.QRCode.pdb
 C:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\ThoughtWorks.QRCode.dll
 C:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\ThoughtWorks.QRCode.pdb
 C:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\obj\Debug\QRCodeLib.csprojResolveAssemblyReference.cache
-L:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\obj\Debug\QRCodeLib.csprojResolveAssemblyReference.cache
 L:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\obj\Debug\ThoughtWorks.QRCode.Properties.Resources.resources
 L:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\obj\Debug\QRCodeLib.csproj.GenerateResource.Cache
 L:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\obj\Debug\ThoughtWorks.QRCode.dll
 L:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\obj\Debug\ThoughtWorks.QRCode.pdb
 L:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\ThoughtWorks.QRCode.dll
 L:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\ThoughtWorks.QRCode.pdb
+L:\codeAdesoft\adesoftv4.0_sia\QRCodeLib\obj\Debug\QRCodeLib.csprojResolveAssemblyReference.cache

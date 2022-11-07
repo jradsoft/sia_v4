@@ -407,7 +407,7 @@ namespace wpfEFac.Models
                 strRetieneIvaCliente = "";
                 strContactoCliente = words[8];
                 strWebsiteCliente = words[9];
-                strTelefonoCliente = words[11];
+                //strTelefonoCliente = words[11];
 
                 ValuesParameters.rfcCliente = strRfcCliente;
 

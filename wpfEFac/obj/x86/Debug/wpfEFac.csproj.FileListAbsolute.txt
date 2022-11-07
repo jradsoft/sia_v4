@@ -3116,8 +3116,6 @@ C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\RdlCompile.compiled
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.exe
 C:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.pdb
 L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\wpfEFac.exe.config
-L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.exe
-L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.pdb
 L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\wpfEFac.exe
 L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\wpfEFac.pdb
 L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\bin\Debug\BouncyCastle.Crypto.dll
@@ -3217,3 +3215,5 @@ L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.Properties.Resource
 L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.csproj.GenerateResource.Cache
 L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\RdlCompile.cache
 L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\RdlCompile.compiled
+L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.exe
+L:\codeAdesoft\adesoftv4.0_sia\wpfEFac\obj\x86\Debug\wpfEFac.pdb

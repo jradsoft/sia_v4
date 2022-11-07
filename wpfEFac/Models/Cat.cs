@@ -24,6 +24,10 @@ namespace wpfEFac.Models
    public class ImpuestosVarios
    {
        public decimal porcImp { set; get; }
+       public Boolean TypeIva { set; get; }
+       public Boolean TypeRetIva { set; get; }
+       public Boolean TypeRetIsr { set; get; }
+       public Boolean TypeRetIeps { set; get; }
        public decimal sumaBaseImp { set; get; }
        public decimal sumaImporteImp { set; get; }
        

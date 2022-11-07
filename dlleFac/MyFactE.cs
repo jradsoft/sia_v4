@@ -153,7 +153,7 @@ namespace dlleFac
                         //SIFEIService myService = new SIFEIService(); // Sifei
                         //CFDiService myService = new CFDiService(); //Edicomn
                         ServicioTimbradoWS myService = new ServicioTimbradoWS();//facturalo productivo
-                        //ServicioTimbradoWS myServiceTest = new ServicioTimbradoWS();//facturalo Test
+                       // ServicioTimbradoWS myServiceTest = new ServicioTimbradoWS();//facturalo Test
                         //byte[] MyCfdiTimbrado = null;
                         byte[] MyTFD = null;
 
@@ -173,9 +173,9 @@ namespace dlleFac
                             ExecuteCommandSync("delete c:\\myfacturae\\adesoftCfdi.zip");
 
 
-                            MyCfdiTimbrado = myService.timbrar(idEquipo, XmlString);  //Productivo
+                           MyCfdiTimbrado = myService.timbrar(idEquipo, XmlString);  //Productivo
 
-                           // MyCfdiTimbrado = myServiceTest.timbrar("0955d485e26c486392909ee79f5ad5c3", XmlString);  //test
+                           //MyCfdiTimbrado = myServiceTest.timbrar("0955d485e26c486392909ee79f5ad5c3", XmlString);  //test
 
 
 

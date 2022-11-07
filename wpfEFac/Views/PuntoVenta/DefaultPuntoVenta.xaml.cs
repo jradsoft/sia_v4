@@ -45,7 +45,7 @@ namespace wpfEFac.Views
         private PreFacturaViewModel pfvm;
 
         private ListSortDirection currentSortDirection;
-
+        private eFacDBEntities db;
         decimal sumaRetIva = 0;
         decimal sumaRetIsr = 0;
         decimal sumaImpLocal = 0;
@@ -61,10 +61,19 @@ namespace wpfEFac.Views
             DataContext = new PuntoVentaViewModel();
 
             pfvm = new PreFacturaViewModel();
-            radMes.IsChecked = true;
-            cmbMes.SelectedIndex = DateTime.Now.Month - 1;
-            cmbAaa.SelectedIndex = DateTime.Now.Year - 1;
-            txtAaaa.Text = DateTime.Now.Year.ToString();
+            db = new eFacDBEntities();
+
+            wpfEFac.Models.CFD myCfd = new Models.CFD();
+            cmbTipoComprobante.ItemsSource = db.CFD;
+            cmbTipoComprobante.DisplayMemberPath = "strDescripcion";
+            cmbTipoComprobante.SelectedValuePath = "intID";
+            cmbTipoComprobante.SelectedValue = myCfd.intID;
+            cmbTipoComprobante.SelectedIndex = 0;
+
+            dtpFechaFGInicio.SelectedDate = DateTime.Now;
+            dtpFechaFGFin.SelectedDate = DateTime.Now;
+
+
             buscar();
 
            
@@ -76,7 +85,7 @@ namespace wpfEFac.Views
 
     
 
-
+        /*
         private void buscar()
         {
             eFacDBEntities db = new eFacDBEntities();
@@ -90,23 +99,23 @@ namespace wpfEFac.Views
 
            
 
-        }
+        }*/
 
         private void dtpInicio_Loaded(object sender, RoutedEventArgs e)
         {
-            eFacDBEntities db = new eFacDBEntities();
-            List<Factura> fact = db.Factura.OrderByDescending(p => p.dtmFecha).ToList();
+            //eFacDBEntities db = new eFacDBEntities();
+            //List<Factura> fact = db.Factura.OrderByDescending(p => p.dtmFecha).ToList();
 
-            ICollectionView facturas = CollectionViewSource.GetDefaultView(fact);
-            dtgFacturasHistorico.ItemsSource = facturas;
-            facturas.Filter = TextFilter;
+            //ICollectionView facturas = CollectionViewSource.GetDefaultView(fact);
+            //dtgFacturasHistorico.ItemsSource = facturas;
+            //facturas.Filter = TextFilter;
         }
 
         private void bttBuscar_Click(object sender, RoutedEventArgs e)
         {
             buscar();
         }
-
+        /*
         public bool TextFilter(object o)
         {
             bool retValue = false;
@@ -203,6 +212,93 @@ namespace wpfEFac.Views
             }
 
             return retValue;
+        }
+        */
+        private void buscar()
+        {
+
+            eFacDBEntities db = new eFacDBEntities();
+            List<Factura> fact = null;
+
+            DateTime fechaInicio = DateTime.Parse(dtpFechaFGInicio.SelectedDate.Value.ToString("yyyy-MM-dd") + "T" + dtpFechaFGInicio.SelectedDate.Value.ToString("00:00:00"));
+            DateTime fechaFin = DateTime.Parse(dtpFechaFGFin.SelectedDate.Value.ToString("yyyy-MM-dd") + "T" + dtpFechaFGFin.SelectedDate.Value.ToString("23:59:59"));
+
+
+
+
+
+
+            /**Verificar status de cancelacion**/
+
+            //foreach (var i in fact) {
+            //    try
+            //    {
+            //        if (i.chrStatus == "C")
+            //        {
+
+
+
+
+            //            RespuestaEstatusSAT response = myService.consultarEstadoSAT(UserPac.idEquipo, i.strSelloDigital, UserPac.rfc, i.Clientes.strRFC, i.dcmTotal.ToString());
+
+            //            string estatus = response.Estado+"/" +response.EstatusCancelacion;
+
+            //            if (!string.IsNullOrEmpty(estatus))
+            //            {
+            //                i.strNumero = estatus;
+            //                db.SaveChanges();
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+
+            //    }
+
+            //  }
+
+
+
+
+            if (radRango.IsChecked == true)
+            {
+
+                int intCFD = int.Parse(cmbTipoComprobante.SelectedValue.ToString());
+                if (string.IsNullOrEmpty(txtFolio.Text) && string.IsNullOrEmpty(txtCliente.Text))
+                {
+
+
+                    fact = db.Factura.Where(x => x.dtmFecha >= fechaInicio && x.dtmFecha <= fechaFin && x.chrStatus != "E" && x.intID_Tipo_CFD == intCFD).OrderByDescending(p => p.dtmFecha).ToList();
+                }
+
+                if (!string.IsNullOrEmpty(txtFolio.Text))
+                {
+                    //fact = db.Factura.Where(x => x.chrStatus != "E" && x.strFolio == strFolio.Trim()).OrderByDescending(p => p.dtmFecha).ToList();
+                    fact = db.Factura.Where(x => x.dtmFecha >= fechaInicio && x.dtmFecha <= fechaFin && x.chrStatus != "E" && x.intID_Tipo_CFD == intCFD && x.strFolio == txtFolio.Text.Trim()).OrderByDescending(p => p.dtmFecha).ToList();
+                }
+
+
+                if (!string.IsNullOrEmpty(txtCliente.Text))
+                {
+                    //fact = db.Factura.Where(x => x.chrStatus != "E" && x.Clientes.strNombreComercial.Contains(strNombre)).OrderByDescending(p => p.dtmFecha).ToList();
+                    fact = db.Factura.Where(x => x.dtmFecha >= fechaInicio && x.dtmFecha <= fechaFin && x.chrStatus != "E" && x.intID_Tipo_CFD == intCFD && x.Clientes.strNombreComercial.Contains(txtCliente.Text.Trim())).OrderByDescending(p => p.dtmFecha).ToList();
+                }
+            }
+
+            if (radTodos.IsChecked == true)
+            {
+
+                fact = db.Factura.Where(x => x.dtmFecha >= fechaInicio && x.dtmFecha <= fechaFin && x.chrStatus != "E").OrderByDescending(p => p.dtmFecha).ToList();
+
+
+            }
+
+
+
+            ICollectionView facturas = CollectionViewSource.GetDefaultView(fact);
+            dtgFacturasHistorico.ItemsSource = facturas;
+            //facturas.Filter = TextFilter;
+
         }
 
         //private void dtpFin_Loaded(object sender, RoutedEventArgs e)
@@ -879,8 +975,8 @@ namespace wpfEFac.Views
 
                             pfvm.UpdateFolioActual(f.intID_Certificate, f.intID_Tipo_CFD);
 
-                            cmbMes.SelectedIndex = DateTime.Now.Month - 1;
-                            txtAaaa.Text = DateTime.Now.Year.ToString();
+                          //  cmbMes.SelectedIndex = DateTime.Now.Month - 1;
+                          //  txtAaaa.Text = DateTime.Now.Year.ToString();
                             buscar();
 
                         }
@@ -1476,7 +1572,7 @@ namespace wpfEFac.Views
                     //string dcmIVA = item.dcmIVA.Value; //(decimal.Parse(words[8]) - decimal.Parse("1.0000")).ToString();
                     decimal dcmVU = item.dcmPrecioUnitario; //decimal.Parse(words[6]);
                     decimal dcmImporte = item.dcmCantidad * dcmVU;
-                    dcmImporte = decimal.Parse(dcmImporte.ToString("#0.000000"));
+                    dcmImporte = decimal.Parse(dcmImporte.ToString("#0.000"));
 
                     decimal opIeps = 0;
                     decimal BaseIeps = 0;
@@ -1648,7 +1744,7 @@ namespace wpfEFac.Views
                             myConceptoTransladoIeps.TasaOCuotaSpecified = true;
                             myConceptoTransladoIeps.Base = dcmImporte; //item.dcmPrecioUnitario * item.intCantidad;
                             decimal impuestoRetIeps = myConceptoTransladoIeps.Base * dcmRetIEPS;//item.dcmIVA;
-                            myConceptoTransladoIeps.Importe = decimal.Parse(impuestoRetIeps.ToString("#0.0000"));
+                            myConceptoTransladoIeps.Importe = decimal.Parse(impuestoRetIeps.ToString("#0.000"));
                             myConceptoTransladoIeps.ImporteSpecified = true;
 
 
@@ -1778,7 +1874,7 @@ namespace wpfEFac.Views
                         ClaveUnidad = claveunidad,
                         NoIdentificacion = "1",//item.Productos.strCodigo,
                         Descripcion = item.strConcepto,
-                        ValorUnitario = decimal.Parse(item.dcmPrecioUnitario.ToString("#0.000000")),
+                        ValorUnitario = decimal.Parse(item.dcmPrecioUnitario.ToString("#0.000")),
                         Importe = dcmImporte, //decimal.Parse(item.dcmImporte.ToString("#0.000000")),
                         Impuestos = comImpuestos
 
@@ -1821,7 +1917,7 @@ namespace wpfEFac.Views
                                     string dcmIVA = strIva; //(decimal.Parse(words[8]) - decimal.Parse("1.0000")).ToString();
                                     decimal dcmVU = decimal.Parse(words[6]);
                                     decimal dcmImporte = decimal.Parse(words[0]) * dcmVU ;
-                                    dcmImporte = decimal.Parse(dcmImporte.ToString("#0.000000"));
+                                    dcmImporte = decimal.Parse(dcmImporte.ToString("#0.000"));
 
 
 
@@ -1950,7 +2046,7 @@ namespace wpfEFac.Views
                                             myConceptoTransladoIeps.TasaOCuotaSpecified = true;
                                             myConceptoTransladoIeps.Base = dcmImporte; //item.dcmPrecioUnitario * item.intCantidad;
                                             decimal impuestoRetIeps = myConceptoTransladoIeps.Base * dcmRetIEPS;//item.dcmIVA;
-                                            myConceptoTransladoIeps.Importe = decimal.Parse(impuestoRetIeps.ToString("#0.0000"));
+                                            myConceptoTransladoIeps.Importe = decimal.Parse(impuestoRetIeps.ToString("#0.00000"));
                                             myConceptoTransladoIeps.ImporteSpecified = true;
 
 
@@ -1994,7 +2090,7 @@ namespace wpfEFac.Views
                                         ClaveUnidad = claveunidad,
                                         NoIdentificacion = "1",//item.Productos.strCodigo,
                                         Descripcion = words[5],
-                                        ValorUnitario = decimal.Parse(dcmVU.ToString("#0.0000")),
+                                        ValorUnitario = decimal.Parse(dcmVU.ToString("#0.000")),
                                         Importe = dcmImporte,
                                         ObjetoImp = dlleFac.c_ObjetoImp.Item02,
                                         Impuestos = comImpuestos
@@ -2392,11 +2488,33 @@ namespace wpfEFac.Views
 
             dllPag.Pagos Pago = new dllPag.Pagos();
             dllPag.PagosTotales totalesPago = new dllPag.PagosTotales();
-
+            dllPag.PagosPagoDoctoRelacionadoImpuestosDR myPagoImp = null;//new dllPag.PagosPagoDoctoRelacionadoImpuestosDR();
+            //dllPag.PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR myPagoImpTras = new dllPag.PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR();
+            //dllPag.PagosPagoDoctoRelacionadoImpuestosDRRetencionDR myPagoImpRet = new dllPag.PagosPagoDoctoRelacionadoImpuestosDRRetencionDR();
             List<dllPag.PagosPago> myPagos = new List<dllPag.PagosPago>();
 
+
+            
+
+
             List<dllPag.PagosPagoDoctoRelacionado> myPagoRel = null;
+            dllPag.PagosPagoImpuestosP myImpuestosP = null;
+            List<dllPag.PagosPagoImpuestosPTrasladoP> myPagoImpTrasP = new List<dllPag.PagosPagoImpuestosPTrasladoP>();
+            List<dllPag.PagosPagoImpuestosPRetencionP> myPagoImpRetP = new List<dllPag.PagosPagoImpuestosPRetencionP>();
+            List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRRetencionDR> myPagoListImpRet = new List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRRetencionDR>();
+            List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR> myPagoListTrasl = new List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR>();
             string myFormaPago = "";
+            decimal NodototalIva = 0;
+            decimal NodototalBaseIva = 0;
+            Boolean isIva = false;
+            decimal NodototalRetIva = 0;
+            Boolean isRetIva = false;
+            decimal NodototalRetIsr = 0;
+            Boolean isRetIsr = false;
+            decimal NodototaRetIeps = 0;
+            Boolean isRetIeps = false;
+
+            DataCompPago.DataComplementoPago dataJson = JsonConvert.DeserializeObject<DataCompPago.DataComplementoPago>(f.strCadenaOriginal);
 
             if (f.strObervaciones == "FACTORAJE")
             {
@@ -2405,33 +2523,40 @@ namespace wpfEFac.Views
                 /***metodo 1***/
 
 
-                foreach (var item in f.Detalle_Factura)
+               
+
+                
+
+                
+
+                foreach (var item in dataJson.fillData)  //f.Detalle_Factura)
                 {
                     myPagoRel = new List<dllPag.PagosPagoDoctoRelacionado>();
+                    //List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRRetencionDR> myPagoListImpRet = new List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRRetencionDR>();
+                   // List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR> myPagoListTrasl = new List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR>();
 
-
-                    string[] words = item.strPatida.Split('|');
-                    string myUUID = words[0];
-                    string myFol = words[1];
-                    string mySer = words[2];
-                    myFormaPago = words[3];
+                 //   string[] words = item.strPatida.Split('|');
+                //    string myUUID = words[0];
+                //    string myFol = words[1];
+                //    string mySer = words[2];
+                    myFormaPago = item.strFormaPago.Split('-')[0];
 
                     myPagoRel.Add(new dllPag.PagosPagoDoctoRelacionado
                     {
 
 
 
-                        IdDocumento = myUUID,
-                        Serie = mySer,
-                        Folio = myFol,
-                        MonedaDR = "MXN",
+                        IdDocumento = item.strUUID,// myUUID,
+                        Serie = item.strSerie,//mySer,
+                        Folio = item.strFolio,// myFol,
+                        MonedaDR = item.strMoneda,//"MXN",
                         //MetodoDePagoDR = "PPD",
                         NumParcialidad = f.CondPago,
-                        ImpSaldoAnt = decimal.Parse(item.dcmPrecioUnitario.ToString("#0.00")),
+                        ImpSaldoAnt = decimal.Parse(item.dcmImporte.ToString("#0.00")),
                         // ImpSaldoAntSpecified = true,
-                        ImpPagado = decimal.Parse(item.dcmImporte.ToString("#0.00")),
+                        ImpPagado = decimal.Parse(item.dcmPagado.ToString("#0.00")),
                         //ImpPagadoSpecified = true,
-                        ImpSaldoInsoluto = decimal.Parse(item.dcmDescuento.ToString("#0.00")),
+                        ImpSaldoInsoluto = decimal.Parse(item.dcmPendiente.ToString("#0.00")),
                         //ImpSaldoInsolutoSpecified = true,
 
 
@@ -2448,10 +2573,9 @@ namespace wpfEFac.Views
                         RfcEmisorCtaBen = f.Destino,
                         RfcEmisorCtaOrd = f.Origen,
                         NumOperacion = f.RecogerEn,
-                        Monto = decimal.Parse(item.dcmImporte.ToString("#0.00")),
-                        MonedaP = "MXN",
-                        FormaDePagoP = myFormaPago.Substring(0, 2),
-
+                        Monto = decimal.Parse(dataJson.dcmTotal.ToString("#0.00")),
+                        MonedaP = dataJson.strMoneda,//"MXN",
+                        FormaDePagoP =myFormaPago, //myFormaPago.Substring(0, 2),
                         FechaPago = f.dtmFecha,
                         DoctoRelacionado = myPagoRel.ToArray()
 
@@ -2468,52 +2592,122 @@ namespace wpfEFac.Views
 
             /*** Metodo 2 ***/
             // List<dllPag.PagosPagoDoctoRelacionado> myPagoRel = new List<dllPag.PagosPagoDoctoRelacionado>();
+
+                
+
             else
             {
 
                 myPagoRel = new List<dllPag.PagosPagoDoctoRelacionado>();
+                myImpuestosP = new dllPag.PagosPagoImpuestosP();
+              
+               
+
                 string strMoneda = "";
                 string tipoCambio = "";
-                //Boolean valueTC = false;
-                foreach (var item in f.Detalle_Factura)
+                Boolean valueTC = true;
+                
+                
+                foreach (var item in dataJson.fillData)  //f.Detalle_Factura)
                 {
+                    myPagoImp = new dllPag.PagosPagoDoctoRelacionadoImpuestosDR();
+                    myPagoListTrasl = new List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR>();
+                    myPagoListImpRet = new List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRRetencionDR>();
+                    myFormaPago = item.strFormaPago.Split('-')[0];
 
+                    
+                    
+                    strMoneda = item.strMoneda;
+                    tipoCambio = dataJson.strTipoCambio;
 
-
-                    string[] words = item.strPatida.Split('|');
-                    string myUUID = words[0];
-                    string myFol = words[1];
-                    string mySer = words[2];
-                    myFormaPago = words[3];
-                    strMoneda = words[5].Split('-')[0];
-                    tipoCambio = words[6];
-
-                    //if (strMoneda == "USD") {
+                    //if (dataJson.strMoneda == "USD") {
                     //     valueTC = true;             
                     //}
 
 
+
+
+                    foreach (var i in item.fillDataImpuestosDR) {
+
+
+                        if (i.boolTraslado == true)
+                        {
+                           // myPagoListTrasl = new List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR>();
+                            
+                            myPagoListTrasl.Add(new dllPag.PagosPagoDoctoRelacionadoImpuestosDRTrasladoDR
+                            {
+                                TipoFactorDR = dllPag.c_TipoFactor.Tasa,
+                                TasaOCuotaDR = decimal.Parse(i.dcmTasaOCuotaDR.ToString("#0.000000")),
+                                TasaOCuotaDRSpecified = true,
+                                ImpuestoDR = i.strImpuestoDR,//dllPag.c_Impuesto.Item002,
+                                ImporteDR = i.dcmImporteDR,
+                                ImporteDRSpecified = true,
+                                BaseDR = i.dcmBaseDR
+
+
+
+
+                            });
+
+                            
+                        }
+
+                        if (i.boolRetencion==true) {
+                          //  myPagoListImpRet = new List<dllPag.PagosPagoDoctoRelacionadoImpuestosDRRetencionDR>();
+
+                            myPagoListImpRet.Add(new dllPag.PagosPagoDoctoRelacionadoImpuestosDRRetencionDR
+                            {
+                                TipoFactorDR = dllPag.c_TipoFactor.Tasa,
+                                TasaOCuotaDR = decimal.Parse(i.dcmTasaOCuotaDR.ToString("#0.000000")),
+                                //TasaOCuotaDRSpecified = true,
+                                ImpuestoDR = i.strImpuestoDR,//dllPag.c_Impuesto.Item002,
+                                ImporteDR = i.dcmImporteDR,
+                              //  ImporteDRSpecified = true,
+                                BaseDR = i.dcmBaseDR
+
+
+
+
+                            });
+
+
+
+                           
+                        }
+                    
+                    }
+
+
+
+                    myPagoImp.TrasladosDR = myPagoListTrasl.ToArray();
+                    myPagoImp.RetencionesDR = myPagoListImpRet.ToArray();
+
+
+
+                   
+                   
                     myPagoRel.Add(new dllPag.PagosPagoDoctoRelacionado
                     {
 
 
 
-                        IdDocumento = myUUID,
-                        Serie = mySer,
-                        Folio = myFol,
+                        IdDocumento = item.strUUID,//myUUID,
+                        Serie = item.strSerie,
+                        Folio = item.strFolio,
                         MonedaDR = strMoneda,
                         // MetodoDePagoDR = "PPD",
                         NumParcialidad = f.CondPago,
-                        ImpSaldoAnt = decimal.Parse(item.dcmPrecioUnitario.ToString("#0.00")),
+                        ImpSaldoAnt = decimal.Parse(item.dcmImporte.ToString("#0.00")),
                         //  ImpSaldoAntSpecified = true,
-                        ImpPagado = decimal.Parse(item.dcmImporte.ToString("#0.00")),
+                        ImpPagado = decimal.Parse(item.dcmPagado.ToString("#0.00")),
                         //   ImpPagadoSpecified = true,
-                        ImpSaldoInsoluto = decimal.Parse(item.dcmDescuento.ToString("#0.00")),
+                        ImpSaldoInsoluto = decimal.Parse(item.dcmPendiente.ToString("#0.00")),
                         //   ImpSaldoInsolutoSpecified = true,
-                        ObjetoImpDR = dllPag.c_ObjetoImp.Item01,
+                        ObjetoImpDR = dllPag.c_ObjetoImp.Item02,
 
                         EquivalenciaDR = 1,
-                        EquivalenciaDRSpecified = true
+                        EquivalenciaDRSpecified = true,
+                        ImpuestosDR = myPagoImp
 
 
                     });
@@ -2523,11 +2717,94 @@ namespace wpfEFac.Views
                 string CtaBeneficiario = f.Empresa.strCedula;
                 string CtaOrdenante = f.Clientes.strWebSite;
 
-                if (myFormaPago.Substring(0, 2) == "01") {
+                if (myFormaPago == "01")
+                {
                     CtaBeneficiario = "";
                     CtaOrdenante = "";
                 
                 }
+
+
+                foreach (var i in dataJson.fillDataImpuestosP)
+                {
+
+                    if (i.boolTraslado)
+                    {
+
+                        myPagoImpTrasP.Add(new dllPag.PagosPagoImpuestosPTrasladoP
+                        {
+                            BaseP = i.dcmBaseP,
+                            ImporteP = i.dcmImporteP,
+                            ImportePSpecified = true,
+                            ImpuestoP = dllPag.c_Impuesto.Item002,//"002",
+                            TipoFactorP = dllPag.c_TipoFactor.Tasa,
+                            TasaOCuotaP = decimal.Parse("0.160000"),
+                            TasaOCuotaPSpecified = true
+                        });
+
+                        NodototalIva = i.dcmImporteP;
+                        NodototalBaseIva = i.dcmBaseP;
+                        isIva = true;
+                        
+
+                        
+                    }
+
+                    if (i.boolRetencion)
+                    {
+                        if (i.strImpuestoP == "001")
+                        {
+                            myPagoImpRetP.Add(new dllPag.PagosPagoImpuestosPRetencionP
+                            {
+
+                                ImporteP = i.dcmImporteP,
+                                ImpuestoP = dllPag.c_Impuesto.Item001,
+
+                            });
+
+                            NodototalRetIsr = i.dcmImporteP;
+                            isRetIsr = true;
+                        }
+
+                        if (i.strImpuestoP == "002")
+                        {
+                            myPagoImpRetP.Add(new dllPag.PagosPagoImpuestosPRetencionP
+                            {
+
+                                ImporteP = i.dcmImporteP,
+                                ImpuestoP = dllPag.c_Impuesto.Item002,
+
+                            });
+
+                            NodototalRetIva = i.dcmImporteP;
+                            isRetIva = true;
+                        }
+                        if (i.strImpuestoP == "003")
+                        {
+                            myPagoImpRetP.Add(new dllPag.PagosPagoImpuestosPRetencionP
+                            {
+
+                                ImporteP = i.dcmImporteP,
+                                ImpuestoP = dllPag.c_Impuesto.Item003,
+
+                            });
+
+                            NodototaRetIeps = i.dcmImporteP;
+                            isRetIeps = true;
+                        }
+
+                    }
+
+
+
+
+                }
+
+
+
+
+                myImpuestosP.TrasladosP = myPagoImpTrasP.ToArray();
+                myImpuestosP.RetencionesP = myPagoImpRetP.ToArray();
 
                 myPagos.Add(new dllPag.PagosPago
                 {
@@ -2539,31 +2816,50 @@ namespace wpfEFac.Views
                     NumOperacion = f.RecogerEn,
                     Monto = decimal.Parse(f.dcmTotal.ToString("#0.00")),
                     MonedaP = strMoneda,
-
-                    FormaDePagoP = myFormaPago.Substring(0, 2),
+                    FormaDePagoP = myFormaPago,
                     FechaPago = f.dtmFecha,
                     DoctoRelacionado = myPagoRel.ToArray(),
                     TipoCambioP = decimal.Parse(tipoCambio),
-                    TipoCambioPSpecified = true,
+                    TipoCambioPSpecified = valueTC,
+                    ImpuestosP = myImpuestosP
 
                 });
 
 
                 totalesPago.MontoTotalPagos = decimal.Parse(f.dcmTotal.ToString("#0.00"));
 
-
-
-
-
-
-
-
+                if (isIva)
+                {
+                    totalesPago.TotalTrasladosImpuestoIVA16 = NodototalIva;
+                    totalesPago.TotalTrasladosImpuestoIVA16Specified = isIva;
+                    totalesPago.TotalTrasladosBaseIVA16 = NodototalBaseIva;
+                    totalesPago.TotalTrasladosBaseIVA16Specified = isIva;
+                }
+                //totalesPago.TotalTrasladosBaseIVA16 = 0;
+                //totalesPago.TotalTrasladosBaseIVA16Specified = true;
+                if (isRetIva)
+                {
+                    totalesPago.TotalRetencionesIVA = NodototalRetIva;
+                    totalesPago.TotalRetencionesIVASpecified = isRetIva;
+                }
+                if (isRetIsr)
+                {
+                    totalesPago.TotalRetencionesISR = NodototalRetIsr;
+                    totalesPago.TotalRetencionesISRSpecified = isRetIsr;
+                }
+                if (isRetIeps)
+                {
+                    totalesPago.TotalRetencionesIEPS = NodototaRetIeps;
+                    totalesPago.TotalRetencionesIEPSSpecified = isRetIeps;
+                }
+                
 
             }
 
             Pago.Version = "2.0";
             Pago.Pago = myPagos.ToArray();
             Pago.Totales = totalesPago;
+            
 
 
             // MyCFD20.Complemento = new dlleFac.ComprobanteComplemento[1];
@@ -2782,8 +3078,8 @@ namespace wpfEFac.Views
 
                             db.SaveChanges();
 
-                            cmbMes.SelectedIndex = DateTime.Now.Month - 1;
-                            txtAaaa.Text = DateTime.Now.Year.ToString();
+                            //cmbMes.SelectedIndex = DateTime.Now.Month - 1;
+                            //txtAaaa.Text = DateTime.Now.Year.ToString();
                             buscar();
                            
                         }
@@ -3314,8 +3610,8 @@ namespace wpfEFac.Views
 
 
                         // dtgFacturasHistorico.ItemsSource = db.Factura.Where(mf => mf.chrStatus != "E").OrderByDescending(d => d.dtmFecha);
-                        cmbMes.SelectedIndex = DateTime.Now.Month - 1;
-                        txtAaaa.Text = DateTime.Now.Year.ToString();
+                        //cmbMes.SelectedIndex = DateTime.Now.Month - 1;
+                        //txtAaaa.Text = DateTime.Now.Year.ToString();
                         buscar();
 
                     }
@@ -3343,10 +3639,10 @@ namespace wpfEFac.Views
 
         private void radMes_Click(object sender, RoutedEventArgs e)
         {
-            cmbMes.SelectedIndex = DateTime.Now.Month - 1;
-            cmbAaa.SelectedIndex = DateTime.Now.Year- 1;
-            txtAaaa.Text = DateTime.Now.Year.ToString();
-            buscar();
+            //cmbMes.SelectedIndex = DateTime.Now.Month - 1;
+            //cmbAaa.SelectedIndex = DateTime.Now.Year- 1;
+            //txtAaaa.Text = DateTime.Now.Year.ToString();
+            //buscar();
         }
 
         private void radFecha_Click(object sender, RoutedEventArgs e)
@@ -3376,10 +3672,10 @@ namespace wpfEFac.Views
 
         private void radAno_Click(object sender, RoutedEventArgs e)
         {
-            cmbMes.SelectedIndex = DateTime.Now.Month - 1;
-            cmbAaa.SelectedIndex = DateTime.Now.Year - 1;
-            txtAaaa.Text = DateTime.Now.Year.ToString();
-            buscar();
+            //cmbMes.SelectedIndex = DateTime.Now.Month - 1;
+            //cmbAaa.SelectedIndex = DateTime.Now.Year - 1;
+            //txtAaaa.Text = DateTime.Now.Year.ToString();
+            //buscar();
         }
         
         private void SaveDataDBSia(string FolioSia,string FolioLocal,string fecha, string certificadoEmisor,string certificadoSat, string UUID, string fechaTimbrado,string ImporteLetra, string CadenaOriginal, string selloCFD, string selloSAT, string urlQR,decimal subtotal, decimal iva, decimal retIeps, decimal total )
@@ -3430,9 +3726,9 @@ namespace wpfEFac.Views
                 try
                 {
 
-                    radMes.IsChecked = true;
-                    cmbMes.SelectedIndex = DateTime.Now.Month - 1;
-                    txtAaaa.Text = DateTime.Now.Year.ToString();
+                    //radMes.IsChecked = true;
+                    //cmbMes.SelectedIndex = DateTime.Now.Month - 1;
+                    //txtAaaa.Text = DateTime.Now.Year.ToString();
                     buscar();
 
 
@@ -3644,6 +3940,11 @@ namespace wpfEFac.Views
             return urlSalida;
 
 
+        }
+
+        private void radRango_Click(object sender, RoutedEventArgs e)
+        {
+            buscar();
         }
      
     }

@@ -78,6 +78,5 @@ C:\codeAdesoft\adesoftv4.0_sia\GenCode128\obj\Debug\GenCode128.pdb
 C:\codeAdesoft\adesoftv4.0_sia\GenCode128\obj\Debug\GenCode128.csprojResolveAssemblyReference.cache
 L:\codeAdesoft\adesoftv4.0_sia\GenCode128\bin\Debug\GenCode128.dll
 L:\codeAdesoft\adesoftv4.0_sia\GenCode128\bin\Debug\GenCode128.pdb
-L:\codeAdesoft\adesoftv4.0_sia\GenCode128\obj\Debug\GenCode128.csprojResolveAssemblyReference.cache
 L:\codeAdesoft\adesoftv4.0_sia\GenCode128\obj\Debug\GenCode128.dll
 L:\codeAdesoft\adesoftv4.0_sia\GenCode128\obj\Debug\GenCode128.pdb
